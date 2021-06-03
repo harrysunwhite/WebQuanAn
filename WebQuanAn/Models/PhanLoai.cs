@@ -15,6 +15,14 @@ namespace WebQuanAn.Models
         public  Int32  Id { get; set; }
         public  String  TenLoai { get; set; }
     }
+    public class PhanLoaiSearchModel
+    {
+
+        public int? Page { get; set; }
+
+
+        public String TenLoai { get; set; }
+    }
 }
 
 

@@ -27,7 +27,7 @@
             <label for="ImageFile" class="control-label">Hình Ảnh</label>
             <br />
             <img src="~/images/unchose.jpg" id="imgTD" width="200" height="200" />
-            <input asp-for="ImageFile" accept="image/*" id="imgfile"  />
+            <input asp-for="ImageFile" accept="image/*" id="imgfile" />
             <input asp-for="HinhAnh" id="UrlHinh" />
         </div>
         <div class="form-group col-6">
@@ -47,16 +47,18 @@
 
     </div>
 </div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 <script>
     function readURLc(input) {
-        
+
 
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             $('#UrlHinh').val(input.files[0].name);
             reader.onload = function (e) {
                 $('#imgTD').attr('src', e.target.result);
-               
+
 
             }
 
@@ -77,7 +79,7 @@
         var files = fileUpload.files;
 
         var data = new FormData();
-        
+
         data.append(files[0].name, files[0]);
 
         $.ajax({
@@ -97,7 +99,7 @@
 
             success: function (message) {
 
-               
+
 
             },
 

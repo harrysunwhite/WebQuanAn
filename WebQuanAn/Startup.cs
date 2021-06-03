@@ -53,6 +53,7 @@ namespace WebQuanAn
             
             services.AddTransient<IPhanLoai,PhanLoaisvc>();
             services.AddTransient<IThucDon, ThucDonsvc>();
+            services.AddTransient<IAdminUser, AdminUsersvc>();
             
             services.AddControllersWithViews();
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
