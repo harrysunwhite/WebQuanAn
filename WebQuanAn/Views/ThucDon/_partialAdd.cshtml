@@ -1,0 +1,128 @@
+
+
+@model WebQuanAn.Models.ThucDon
+
+<h4>Tạo mới</h4>
+<hr />
+<div class="row">
+    <div class="d-flex flex-wrap">
+
+        <div class="text-danger"></div>
+        <div class="form-group col-6">
+            <label asp-for=" TenMon" class="control-label"></label>
+            <input asp-for="TenMon" class="form-control" required />
+            <span asp-validation-for="TenMon" class="text-danger"></span>
+        </div>
+        <div class="form-group col-6">
+            <label asp-for=" Mota" class="control-label"></label>
+            <input asp-for="Mota" class="form-control" />
+            <span asp-validation-for="Mota" class="text-danger"></span>
+        </div>
+        <div class="form-group col-6">
+            <label asp-for=" Gia" class="control-label"></label>
+            <input asp-for="Gia" class="form-control" required />
+            <span asp-validation-for="Gia" class="text-danger"></span>
+        </div>
+        <div class="form-group col-6">
+            <label for="ImageFile" class="control-label">Hình Ảnh</label>
+            <br />
+            <img src="~/images/unchose.jpg" id="imgTD" width="200" height="200" />
+            <input asp-for="ImageFile" accept="image/*" id="imgfile"  />
+            <input asp-for="HinhAnh" id="UrlHinh" />
+        </div>
+        <div class="form-group col-6">
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" checked asp-for="TrangThai" /> @Html.DisplayNameFor(model => model.TrangThai)
+                </label>
+            </div>
+        </div>
+        <div class="form-group col-6">
+            <label asp-for=" MaLoai" class="control-label"></label>
+            <select asp-for="MaLoai" class="form-control" asp-items="ViewBag.MaLoai"></select>
+            <span asp-validation-for="MaLoai" class="text-danger"></span>
+        </div>
+
+
+
+    </div>
+</div>
+<script>
+    function readURLc(input) {
+        
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            $('#UrlHinh').val(input.files[0].name);
+            reader.onload = function (e) {
+                $('#imgTD').attr('src', e.target.result);
+               
+
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#imgfile").change(function () {
+
+        readURLc(this);
+
+
+    });
+    function UploadFile() {
+
+        var fileUpload = $("#imgfile").get(0);
+
+        var files = fileUpload.files;
+
+        var data = new FormData();
+        
+        data.append(files[0].name, files[0]);
+
+        $.ajax({
+
+            type: "POST",
+
+            url: "/ThucDon/CoppyImage",
+
+            contentType: false,
+
+            processData: false,
+
+            data: data,
+
+            async: false,
+
+
+            success: function (message) {
+
+               
+
+            },
+
+            error: function () {
+
+                alert("Error!");
+
+            },
+
+            complete: function () {
+
+                $("#divloader").hide()
+
+            }
+
+        });
+
+    }
+
+</script>
+
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
