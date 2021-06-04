@@ -1,4 +1,4 @@
-
+﻿
 
 
 @model IPagedList<PhanLoai>
@@ -14,13 +14,11 @@
         <table class="table table table-striped table-bordered text-left w-100 " style="font-size:small">
             <thead class="bg-success">
                 <tr>
-                                        <th>
-                        Id
+
+                    <th>
+                       Tên loại thực đơn
                     </th>
-                                         <th>
-                        TenLoai
-                    </th>
-                                         
+
                     <th>ACTION</th>
                 </tr>
             </thead>
@@ -28,8 +26,8 @@
                 @foreach (var item in ViewBag.Names as IEnumerable<PhanLoai>)
                 {
                     <tr>
-                                                     <td>@item.Id</td>
-                                                      <td>@item.TenLoai</td>
+                                                  
+                         <td>@item.TenLoai</td>
                                                 
                         <td><a class="btn btn-info btn-sm btn-sm active" onclick="Edit(@item.Id)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> | <a class="btn btn-danger btn-sm active" onclick="_delete(@item.Id)"> <i class="fa fa-trash"></i></a></td>
                     </tr>

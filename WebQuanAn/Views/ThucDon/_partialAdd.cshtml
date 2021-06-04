@@ -24,12 +24,11 @@
             <span asp-validation-for="Gia" class="text-danger"></span>
         </div>
         <div class="form-group col-6">
-            <label for="ImageFile" class="control-label">Hình Ảnh</label>
-            <br />
-            <img src="~/images/unchose.jpg" id="imgTD" width="200" height="200" />
-            <input asp-for="ImageFile" accept="image/*" id="imgfile" />
-            <input asp-for="HinhAnh" id="UrlHinh" />
+            <label asp-for=" MaLoai" class="control-label"></label>
+            <select asp-for="MaLoai" class="form-control" asp-items="ViewBag.MaLoai"></select>
+            <span asp-validation-for="MaLoai" class="text-danger"></span>
         </div>
+
         <div class="form-group col-6">
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -38,17 +37,18 @@
             </div>
         </div>
         <div class="form-group col-6">
-            <label asp-for=" MaLoai" class="control-label"></label>
-            <select asp-for="MaLoai" class="form-control" asp-items="ViewBag.MaLoai"></select>
-            <span asp-validation-for="MaLoai" class="text-danger"></span>
+            <label for="ImageFile" class="control-label">Hình Ảnh:&nbsp;</label><input asp-for="ImageFile" accept="image/*" id="imgfile" />
+            <br />
+            <img src="~/Images/unchose.jpg" id="imgTD" width="100" height="100" />
+            
+            <input asp-for="HinhAnh" value="unchose.jpg" hidden id="UrlHinh" />
         </div>
+
 
 
 
     </div>
 </div>
-<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 <script>
     function readURLc(input) {
 
@@ -74,54 +74,58 @@
     });
     function UploadFile() {
 
-        var fileUpload = $("#imgfile").get(0);
-
-        var files = fileUpload.files;
-
-        var data = new FormData();
-
-        data.append(files[0].name, files[0]);
-
-        $.ajax({
-
-            type: "POST",
-
-            url: "/ThucDon/CoppyImage",
-
-            contentType: false,
-
-            processData: false,
-
-            data: data,
-
-            async: false,
+        var fileName = $("#imgfile").val();
 
 
-            success: function (message) {
+        if (fileName) { // returns true if the string is not empty
+            var fileUpload = $("#imgfile").get(0);
+
+            var files = fileUpload.files;
+
+            var data = new FormData();
+
+            data.append(files[0].name, files[0]);
+
+            $.ajax({
+
+                type: "POST",
+
+                url: "/PageHelper/CoppyImage",
+
+                contentType: false,
+
+                processData: false,
+
+                data: data,
+
+                async: false,
+
+
+                success: function (message) {
 
 
 
-            },
+                },
 
-            error: function () {
+                error: function () {
 
-                alert("Error!");
+                    alert("Error!");
 
-            },
+                },
 
-            complete: function () {
+                complete: function () {
 
-                $("#divloader").hide()
+                    $("#divloader").hide()
 
-            }
+                }
 
-        });
+            });
+        }
+
 
     }
-
 </script>
 
-</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

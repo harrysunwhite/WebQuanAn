@@ -6,10 +6,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
- <link rel="stylesheet" href="~/css/PagedList.css" />
- <link rel="stylesheet" href="~/css/toastr.css"/>
- <script src="~/js/toastr.js"></script>
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/css/PagedList.css" />
+<link rel="stylesheet" href="~/css/toastr.css" />
+<script src="~/js/toastr.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
 
@@ -27,18 +29,18 @@
             @using (Html.BeginForm(null, null, FormMethod.Get, new { name = "frmSearch", id = "frmSearch", enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
-                
-                                    
-                        <input asp-for="TenLoai" id="TenLoaiSearch" placeholder="Filter by TenLoai" class="mr-2 mb-2 form-control-sm" />
-                   
-                            
 
-                
-                
+
+                <input asp-for="TenLoai" id="TenLoaiSearch" placeholder="Tìm theo tên" class="mr-2 mb-2 form-control-sm" />
+
+
+
+
+
                 <button type="button" class="btn btn-success btn-sm mr-2 " onclick="Timkiem()" id="btSeach"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Lọc</button>
 
             }
-          
+
         </div>
 
 
@@ -54,9 +56,9 @@
 </div>
 
 <div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <!-- Modal content-->
-        <div class="modal-content" style="width: 800px;">
+        <div class="modal-content">
             @using (Html.BeginForm(null, null, FormMethod.Get, new { name = "frm", id = "frm", enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
@@ -83,9 +85,9 @@
 
 
 @section scripts{
-     <script src="~/js/toastr.js"></script>
+    <script src="~/js/toastr.js"></script>
     <script src="/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
-  
+
     <script>
 
         var $id = "";
@@ -100,61 +102,59 @@
             function () {
 
                 $("#btSave").click(function () {
-                     if($("#frm").valid())
-                    {
-                         $.ajax({
-                        type: "POST",
-                        url: "/PhanLoai/Add",
-                        data: $("#frm").serialize(),
-                        success: function (result) {
-                            $('#preloader-wrapper').toggleClass('hide');
-                            if (result.status >= 1) {
+                    if ($("#frm").valid()) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/PhanLoai/Add",
+                            data: $("#frm").serialize(),
+                            success: function (result) {
+                                $('#preloader-wrapper').toggleClass('hide');
+                                if (result.status >= 1) {
 
-                                toastr.success(result.text);
-                                reloadpage(1);
+                                    toastr.success(result.text);
+                                    reloadpage(1);
+                                }
+                                else {
+                                    toastr.warning(result.text);
+                                }
+                            },
+                            error: function (errormessage) {
+                                alert(errormessage.responseText);
+                            },
+                            failure: function (message) {
+                                $('#preloader-wrapper').toggleClass('hide');
                             }
-                            else {
-                                toastr.warning(result.text);
-                            }
-                        },
-                        error: function (errormessage) {
-                            alert(errormessage.responseText);
-                        },
-                        failure: function (message) {
-                            $('#preloader-wrapper').toggleClass('hide');
-                        }
-                    });
+                        });
                     }
 
-                   
+
                 });
                 $("#btupdate").click(function () {
-                     if($("#frm").valid())
-                    {
-                         $.ajax({
-                        type: "POST",
-                        url: "/PhanLoai/Edit",
-                        dataType: "json",
-                        data: $("#frm").serialize(),
-                        success: function (result) {
-                            $('#preloader-wrapper').toggleClass('hide');
-                            if (result.status >= 1) {
-                                toastr.success(result.text);
-                                reloadpage(1);
+                    if ($("#frm").valid()) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/PhanLoai/Edit",
+                            dataType: "json",
+                            data: $("#frm").serialize(),
+                            success: function (result) {
+                                $('#preloader-wrapper').toggleClass('hide');
+                                if (result.status >= 1) {
+                                    toastr.success(result.text);
+                                    reloadpage(1);
+                                }
+                                else {
+                                    alert("Cập nhật thất bại")
+                                }
+                            },
+                            error: function (errormessage) {
+                                alert(errormessage.responseText);
+                            },
+                            failure: function (message) {
+                                $('#preloader-wrapper').toggleClass('hide');
                             }
-                            else {
-                                alert("Cập nhật thất bại")
-                            }
-                        },
-                        error: function (errormessage) {
-                            alert(errormessage.responseText);
-                        },
-                        failure: function (message) {
-                            $('#preloader-wrapper').toggleClass('hide');
-                        }
-                    });
+                        });
                     }
-                   
+
                 });
                 $("#btclose").click(function () {
 
@@ -173,7 +173,7 @@
 
         function reloadpage(page) {
             obj = {};
-          
+
             obj.Page = page;
             $.ajax({
                 url: '/PhanLoai/PageList/',
@@ -291,8 +291,8 @@
         }
 
         function Timkiem() {
-            
-           
+
+
             $.ajax({
                 url: '/PhanLoai/PageList/',
 
@@ -303,8 +303,8 @@
 
 
                 success: function (result) {
-                   
-                   
+
+
                     if (result.status == -2) {
                         toastr.success(result.text);
 

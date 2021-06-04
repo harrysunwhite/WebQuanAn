@@ -135,11 +135,9 @@ namespace WebQuanAn.Services
                      
          
 
-                if(!string.IsNullOrWhiteSpace(model.TrangThai.ToString())) 
-                                
-                    {
-                     listUnpaged = listUnpaged.Where(x => x.TrangThai==model.TrangThai);
-                    }
+             
+
+                    
           
 
                    

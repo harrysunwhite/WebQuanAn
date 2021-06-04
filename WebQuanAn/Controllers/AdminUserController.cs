@@ -69,9 +69,13 @@ namespace WebQuanAn.Controllers
 
         public IActionResult Add( AdminUser model)
         {
+
          if(ModelState.IsValid)
             {
-                
+                if (string.Compare(model.Hinh, "unchoseUser.png", false) != 0)
+                    model.Hinh = DateTime.Now.ToString("ddmmyyyy_HHm") + "_" + model.Hinh;
+
+               
                 if (_service.Add(model)!=0)
                return Json(new { status = 1, title = "", text = "Thêm thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             else
@@ -97,15 +101,33 @@ namespace WebQuanAn.Controllers
        
         public ActionResult Edit( AdminUser model)
         {
-           if(ModelState.IsValid)
-            {
-                 if (_service.Edit(model)!=0)
+            model.MatkhauCF = model.MatKhau;
+          
+                model.Hinh = DateTime.Now.ToString("ddmmyyyy_HHm") + "_" + model.Hinh;
+                if (_service.Edit(model)!=0)
                 return Json(new { status = 1, title = "", text = "Cập nhật thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             else
                 return Json(new { status = -2, title = "", text = "Cập nhật không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
-            }
-            return NoContent();
            
+           
+        }
+
+
+        [HttpPost]
+
+        public ActionResult EditNoImage(AdminUser model)
+        {
+
+            model.MatkhauCF = model.MatKhau;
+
+            if (_service.Edit(model) != 0)
+                    return Json(new { status = 1, title = "", text = "Cập nhật thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+                else
+                    return Json(new { status = -2, title = "", text = "Cập nhật không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+           
+            
+            
+
         }
 
         [HttpPost]

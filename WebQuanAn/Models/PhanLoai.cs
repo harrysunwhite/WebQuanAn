@@ -1,4 +1,4 @@
-
+﻿
 
 using System;
 using System.Collections.Generic;
@@ -13,6 +13,9 @@ namespace WebQuanAn.Models
     {
     [Key]
         public  Int32  Id { get; set; }
+        [Display(Name ="Tên loại thực đơn")]
+        [Required(ErrorMessage ="This field is required")]
+        [StringLength(100)]
         public  String  TenLoai { get; set; }
     }
     public class PhanLoaiSearchModel

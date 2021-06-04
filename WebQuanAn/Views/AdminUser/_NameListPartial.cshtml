@@ -1,4 +1,4 @@
-
+﻿
 
 
 @model IPagedList<AdminUser>
@@ -14,49 +14,48 @@
         <table class="table table table-striped table-bordered text-left w-100 " style="font-size:small">
             <thead class="bg-success">
                 <tr>
-                                        <th>
-                        Id
+
+                    <th>
+                        Họ và Tên
                     </th>
-                                         <th>
-                        Ho
-                    </th>
-                                         <th>
-                        Ten
-                    </th>
-                                         <th>
+
+                    <th>
                         Email
                     </th>
-                                         <th>
-                        MatKhau
+
+
+                    <th>
+                        Số điện thoại
                     </th>
-                                         <th>
-                        Hinh
+                    <th>
+                        Hình
                     </th>
-                                         <th>
-                        SDT
+                    <th>
+                        Quyền
                     </th>
-                                         <th>
-                        TrangThai
+                    <th>
+                        Trạng thái
                     </th>
-                                         
+
                     <th>ACTION</th>
                 </tr>
             </thead>
             <tbody class="tbody">
                 @foreach (var item in ViewBag.Names as IEnumerable<AdminUser>)
                 {
-                    <tr>
-                                                     <td>@item.Id</td>
-                                                      <td>@item.Ho</td>
-                                                      <td>@item.Ten</td>
-                                                      <td>@item.Email</td>
-                                                      <td>@item.MatKhau</td>
-                                                      <td>@item.Hinh</td>
-                                                      <td>@item.SDT</td>
-                                                      <td>@item.TrangThai</td>
-                                                
-                        <td><a class="btn btn-info btn-sm btn-sm active" onclick="Edit(@item.Id)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> | <a class="btn btn-danger btn-sm active" onclick="_delete(@item.Id)"> <i class="fa fa-trash"></i></a></td>
-                    </tr>
+                    var tinhtrang = item.TrangThai ? "Hoạt động" : "Không hoạt động";
+                <tr>
+
+                    <td>@item.Ho @item.Ten</td>
+
+                    <td>@item.Email</td>
+                    <td>@item.SDT</td>
+                    <td> <img src="~/Images/@item.Hinh" width="100" height="100" /></td>
+                    <td>@item.Role</td>
+                    <td>@tinhtrang</td>
+
+                    <td><a class="btn btn-info btn-sm btn-sm active" onclick="Edit(@item.Id)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> | <a class="btn btn-danger btn-sm active" onclick="_delete(@item.Id)"> <i class="fa fa-trash"></i></a></td>
+                </tr>
                 }
             </tbody>
         </table>

@@ -78,7 +78,8 @@ namespace WebQuanAn.Controllers
             
          if(ModelState.IsValid)
             {
-                model.HinhAnh = DateTime.Now.ToString("ddmmyyyy") + "_" + model.HinhAnh;
+                if(string.Compare(model.HinhAnh,"unchose.jpg",false)!=0)
+                model.HinhAnh = DateTime.Now.ToString("ddmmyyyy_HHm") + "_" + model.HinhAnh;
 
 
                 if (_service.Add(model)!=0)
@@ -98,7 +99,11 @@ namespace WebQuanAn.Controllers
                 return NotFound();
             }
             else
+            {
+                ViewData["MaLoai"] = new SelectList(_service.PhanloaiNav(), "Id", "TenLoai", _service.Get(id).MaLoai);
                 return PartialView("_partialedit", _service.Get(id));
+            }    
+                
         }
 
        
@@ -106,9 +111,12 @@ namespace WebQuanAn.Controllers
        
         public ActionResult Edit( ThucDon model)
         {
+
            if(ModelState.IsValid)
             {
-                 if (_service.Edit(model)!=0)
+               
+                    model.HinhAnh = DateTime.Now.ToString("ddmmyyyy_HHm") + "_" + model.HinhAnh;
+                if (_service.Edit(model)!=0)
                 return Json(new { status = 1, title = "", text = "Cập nhật thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             else
                 return Json(new { status = -2, title = "", text = "Cập nhật không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
@@ -116,6 +124,24 @@ namespace WebQuanAn.Controllers
             return NoContent();
            
         }
+
+        [HttpPost]
+
+        public ActionResult EditNoImage(ThucDon model)
+        {
+
+            if (ModelState.IsValid)
+            {
+               
+                if (_service.Edit(model) != 0)
+                    return Json(new { status = 1, title = "", text = "Cập nhật thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+                else
+                    return Json(new { status = -2, title = "", text = "Cập nhật không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+            }
+            return NoContent();
+
+        }
+
 
         [HttpPost]
         public ActionResult Delete(int id)
@@ -126,64 +152,7 @@ namespace WebQuanAn.Controllers
                 return Json(new { status = -2, title = "", text = "Xoá không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
         }
 
-        [HttpPost]
-
-        public string CoppyImage()
-
-        {
-
-            string result = string.Empty;
-
-            try
-
-            {
-
-                long size = 0;
-
-                var file = Request.Form.Files;
-
-                var filename = ContentDispositionHeaderValue
-
-                                .Parse(file[0].ContentDisposition)
-
-                                .FileName
-
-                                .Trim('"');
-                
-
-                string FilePath = hostingEnv.WebRootPath+@"\Images\" + DateTime.Now.ToString("ddmmyyyy") + "_"+ $@"{ filename}";
-                Console.WriteLine(FilePath);
-                size += file[0].Length;
-
-                using (FileStream fs = System.IO.File.Create(FilePath))
-
-                {
-
-                    file[0].CopyTo(fs);
-
-                    fs.Flush();
-
-                }
-
-
-
-                result = FilePath;
-
-            }
-
-            catch (Exception ex)
-
-            {
-
-                result = ex.Message;
-
-            }
-
-
-
-            return result;
-
-        }
+        
 
     }
 }

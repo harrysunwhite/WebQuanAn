@@ -6,6 +6,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebQuanAn.Models
 {
+    public enum Role
+    {
+        [Display(Name ="Quản lý")]
+        Admin = 1,
+        [Display(Name ="User")]
+        User = 2
+    }
     public partial class AdminUser
     {
         [Display(Name ="Mã Admin")]
@@ -30,9 +37,9 @@ namespace WebQuanAn.Models
         [StringLength(50)]
         public string MatKhau { get; set; }
         [NotMapped]
-        [Display(Name = "Xác nhận mật khẩu")]
+        [Display(Name = "Mật khẩu xác nhận")]
         [Required(ErrorMessage = "This field is required")]
-        [Compare("MayKhau",ErrorMessage ="Password not matched")]
+        [Compare("MatKhau",ErrorMessage ="Password not matched")]
         public string MatkhauCF { get; set; }
 
         [Display(Name ="Hình ảnh")]
@@ -45,6 +52,11 @@ namespace WebQuanAn.Models
         [RegularExpression(@"((09|03|07|08|05)+([0-9]{8})\b)", ErrorMessage = "Invail phone number")]
         [StringLength(15)]
         public string SDT { get; set; }
+
+
+        [Required(ErrorMessage = "This field is required")]
+        [Range(1,2,ErrorMessage ="Chọn quyền quản trị")]
+        public Role Role { get; set; }
 
 
         [Display(Name = "Trạng thái")]

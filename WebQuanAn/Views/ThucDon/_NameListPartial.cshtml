@@ -1,4 +1,4 @@
-
+﻿
 
 
 @model IPagedList<ThucDon>
@@ -14,43 +14,42 @@
         <table class="table table table-striped table-bordered text-left w-100 " style="font-size:small">
             <thead class="bg-success">
                 <tr>
-                                        <th>
-                        Id
+                    
+                    <th>
+                        Tên món
                     </th>
-                                         <th>
-                        TenMon
+                    <th>
+                        Mô tả
                     </th>
-                                         <th>
-                        Mota
+                    <th>
+                        Giá bán
                     </th>
-                                         <th>
-                        Gia
+                    <th>
+                        Hình minh hoạ
                     </th>
-                                         <th>
-                        HinhAnh
+                    <th>
+                        Đang phục vụ
                     </th>
-                                         <th>
-                        TrangThai
+                    <th>
+                        Mã loại
                     </th>
-                                         <th>
-                        MaLoai
-                    </th>
-                                         
+
                     <th>ACTION</th>
                 </tr>
             </thead>
-            <tbody class="tbody">
+            <tbody class="tbody text-center">
                 @foreach (var item in ViewBag.Names as IEnumerable<ThucDon>)
                 {
+                    var trangthai = item.TrangThai ? "Khả dụng" : "Không khả dụng";
                     <tr>
-                                                     <td>@item.Id</td>
-                                                      <td>@item.TenMon</td>
-                                                      <td>@item.Mota</td>
-                                                      <td>@item.Gia</td>
-                                                      <td> <img src="~/Images/@item.HinhAnh" width="200" height="200" /></td>
-                                                      <td>@item.TrangThai</td>
-                                                      <td>@item.MaLoaiNavigation.TenLoai</td>
-                                                
+                        
+                        <td class="align-middle">@item.TenMon</td>
+                        <td class="align-middle">@item.Mota</td>
+                        <td class="align-middle">@item.Gia.ToString("n0").Replace(',', '.')</td>
+                        <td> <img src="~/Images/@item.HinhAnh" width="100" height="100" /></td>
+                        <td class="align-middle">@trangthai</td>
+                        <td class="align-middle">@item.MaLoaiNavigation.TenLoai</td>
+
                         <td><a class="btn btn-info btn-sm btn-sm active" onclick="Edit(@item.Id)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> | <a class="btn btn-danger btn-sm active" onclick="_delete(@item.Id)"> <i class="fa fa-trash"></i></a></td>
                     </tr>
                 }

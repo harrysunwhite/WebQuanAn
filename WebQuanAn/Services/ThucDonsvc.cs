@@ -62,12 +62,13 @@ namespace WebQuanAn.Services
         }
         public int  Edit(ThucDon model )
         {
-           
-               
 
+
+           
                
                     try
                     {
+
                         _context.Update(model);
                         _context.SaveChanges();
                         return model.Id;
