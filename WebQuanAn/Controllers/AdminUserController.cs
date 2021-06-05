@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebQuanAn.Models;
 using WebQuanAn.Interfaces;
-
+using WebQuanAn.Constants;
 
 namespace WebQuanAn.Controllers
 {
    
-    public class AdminUserController : Controller
+    public class AdminUserController : BaseController
     {
         private readonly IAdminUser _service;
+        private static bool isUpdate;
         public AdminUserController(IAdminUser service)
         {
             _service = service;
@@ -22,6 +23,7 @@ namespace WebQuanAn.Controllers
 
         public IActionResult Index(AdminUserSearchModel model)
         {
+            isUpdate = false;
            
             if (!model.Page.HasValue) model.Page = 1;
             var listPaged = _service.SearchByCondition(model);
@@ -30,12 +32,12 @@ namespace WebQuanAn.Controllers
             return View();
         }
        
-        // GET: DepartmentController
+      
         [HttpGet]
         
         public ActionResult PageList(AdminUserSearchModel model)
         {
-            
+            isUpdate = false;
           if  (_service.SearchByCondition(model).Count()>0)
             {
                
@@ -59,7 +61,7 @@ namespace WebQuanAn.Controllers
        
         public IActionResult Add()
         {
-          
+            isUpdate = false;
             
             return PartialView("_partialAdd");
 
@@ -69,56 +71,63 @@ namespace WebQuanAn.Controllers
 
         public IActionResult Add( AdminUser model)
         {
-
+            isUpdate = false;
          if(ModelState.IsValid)
             {
                 if (string.Compare(model.Hinh, "unchoseUser.png", false) != 0)
                     model.Hinh = DateTime.Now.ToString("ddmmyyyy_HHm") + "_" + model.Hinh;
-
+                
                
                 if (_service.Add(model)!=0)
                return Json(new { status = 1, title = "", text = "Thêm thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             else
                return Json(new { status = -2, title = "", text = "Thêm không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             }
-            return NoContent();
+            return Json(model); ;
             
         } 
         [HttpGet]
        
         public ActionResult Edit(int id)
         {
+            isUpdate = true;
             if (_service.Get(id) == null)
             {
                 return NotFound();
             }
             else
-                return PartialView("_partialedit", _service.Get(id));
+                return PartialView("_partialedit", _service.GetUpdate(id));
         }
 
        
         [HttpPost]
        
-        public ActionResult Edit( AdminUser model)
+        public ActionResult Edit( UpdateModel model)
         {
-            model.MatkhauCF = model.MatKhau;
-          
+            
+
+            
+
+            if (ModelState.IsValid)
+            {
                 model.Hinh = DateTime.Now.ToString("ddmmyyyy_HHm") + "_" + model.Hinh;
-                if (_service.Edit(model)!=0)
-                return Json(new { status = 1, title = "", text = "Cập nhật thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+                if (_service.Edit(model) != 0)
+                    return Json(new { status = 1, title = "", text = "Cập nhật thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+                else
+                    return Json(new { status = -2, title = "", text = "Cập nhật không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+
+            }
             else
-                return Json(new { status = -2, title = "", text = "Cập nhật không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
-           
-           
+                return Json(model);
         }
 
 
         [HttpPost]
 
-        public ActionResult EditNoImage(AdminUser model)
+        public ActionResult EditNoImage(UpdateModel model)
         {
 
-            model.MatkhauCF = model.MatKhau;
+            
 
             if (_service.Edit(model) != 0)
                     return Json(new { status = 1, title = "", text = "Cập nhật thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
@@ -133,11 +142,78 @@ namespace WebQuanAn.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            if (_service.Delete(id)) 
-                return Json(new { status = 1, title = "", text = "Xoá thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+            UpdateModel adminUser = _service.GetUpdate(id);
+            adminUser.TrangThai = false;
+            if (_service.Edit(adminUser)!=0) 
+                return Json(new { status = 1, title = "", text = "Thao tác thành công ", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             else
-                return Json(new { status = -2, title = "", text = "Xoá không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+                return Json(new { status = -2, title = "", text = "Thao tác không thành công", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
         }
+        [HttpPost]
+        public ActionResult Restore(int id)
+        {
+            UpdateModel adminUser = _service.GetUpdate(id);
+            adminUser.TrangThai = true;
+            if (_service.Edit(adminUser) != 0)
+                return Json(new { status = 1, title = "", text = "Thao tác thành công ", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+            else
+                return Json(new { status = -2, title = "", text = "Thao tác không thành công", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        public IActionResult ValidateEmail(string email)
+        {
+            if(isUpdate )
+            {
+                return Json(data: true);
+            }    
+            if (!_service.CheckEmail(email))
+                return Json(data: "Địa chỉ mail đã tồn tại");
+
+                return Json(data: true);
+
+        }
+
+        public IActionResult ChangePass()
+        {
+            Console.WriteLine("hello");
+            return PartialView("_changePass"); ;
+        }
+
+        [HttpPost]
+        public IActionResult ChangePass(ChangePassModel changePass)
+        {
+            if (ModelState.IsValid)
+            {
+                if(_service.CheckNewPass(changePass.UserEmail,changePass.Oldpass))
+                {
+                    if (_service.ChangePass(changePass))
+                    {
+                        HttpContext.Session.Clear();
+                        return Json(new { status = 1, title = "", text = "Thao tác thành công ", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+                    }
+
+                    else
+                        return Json(new { status = -2, title = "", text = "Thao tác không thành công", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+                }    
+                return Json(new { status = -3, title = "", text = "Mật khẩu cũ không đúng", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+
+
+            }
+            return Json(changePass);
+        }
+
+
+        public IActionResult ValidateNewPass(string Oldpass)
+        {
+            string email = HttpContext.Session.GetString(SessionKey.Nguoidung.UserName);
+            Console.WriteLine(_service.CheckNewPass(email, Oldpass));
+            if (!_service.CheckNewPass(email, Oldpass))
+                return Json(data: "Mật khẩu cũ không đúng");
+
+            return Json(data: true);
+        }
+
+        
     }
 }
 

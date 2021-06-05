@@ -23,17 +23,18 @@
             <button type="button" class="btn btn-success mr-2 btn-sm" onclick="Clear()" id="btSeach"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Làm mới</button>
         </div>
         <div class="row col-12">
+           
             <div class="d-flex flex-wrap m-2 col-6">
+
 
                 @using (Html.BeginForm(null, null, FormMethod.Get, new { name = "frmSearch", id = "frmSearch", enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
 
+                    <input asp-for="Ten" id="TenSearch" placeholder="Tìm theo tên" class="mr-2 mb-2 form-control-sm" />
 
-                    <input asp-for="Ten" id="TenSearch" placeholder="Filter by Ten" class="mr-2 mb-2 form-control-sm" />
 
-
-                    <input asp-for="SDT" id="SDTSearch" placeholder="Filter by SDT" class="mr-2 mb-2 form-control-sm" />
+                    <input asp-for="SDT" id="SDTSearch" placeholder="Tìm theo số điện thoại" class="mr-2 mb-2 form-control-sm" />
 
 
 
@@ -46,18 +47,18 @@
                 }
 
 
-
             </div>
-            <div class="ml-auto col-2">
+                <div class="ml-auto col-2">
 
 
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="chkall" onchange="reloadAll()" />
-                    <label class="form-check-label">Hiện toàn bộ</label>
+                    <div class="form-check">
+                        <input type="checkbox"  class="form-check-input" id="chkall"  onchange="reloadpage()" />
+                        <label class="form-check-label">Hiện toàn bộ</label>
+                    </div>
+
+
                 </div>
-
-
-            </div>
+            
         </div>
         
 
@@ -132,7 +133,7 @@
                             if (result.status >= 1) {
 
                                 toastr.success(result.text);
-                                reloadpage(1);
+                                reloadpage();
                             }
                             else {
                                 toastr.warning(result.text);
@@ -166,7 +167,7 @@
                             $('#preloader-wrapper').toggleClass('hide');
                             if (result.status >= 1) {
                                 toastr.success(result.text);
-                                reloadpage(1);
+                                reloadpage();
                             }
                             else {
                                 alert("Cập nhật thất bại")
@@ -184,11 +185,11 @@
                 });
                 $("#btclose").click(function () {
 
-                    reloadpage(1);
+                    reloadpage();
                 });
                 $("#btcloseins").click(function () {
 
-                    reloadpage(1);
+                    reloadpage();
                 });
 
 
@@ -197,10 +198,12 @@
 
 
 
-        function reloadpage(page) {
+        function reloadpage() {
             obj = {};
-          
-            obj.Page = page;
+            obj.Page = 1
+            if ($('#chkall').is(':checked')) {
+                obj.TrangThai = true;
+            }
             $.ajax({
                 url: '/AdminUser/PageList/',
 
@@ -289,7 +292,36 @@
 
 
         function _delete(id) {
-            var cf = confirm('Bạn muốn xoá bản ghi này?');
+            var cf = confirm('Vô hiệu hoá quản trị viên này?');
+            if (cf) {
+                $.ajax({
+                    type: "POST",
+                    url: "/AdminUser/Delete",
+                    data: { "id": id },
+                    success: function (result) {
+                        $('#preloader-wrapper').toggleClass('hide');
+                        if (result.status >= 1) {
+                            toastr.success(result.text);
+
+                            reloadpage();
+                        }
+                        else {
+                            toastr.warning(result.text);
+                        }
+                    },
+                    error: function (errormessage) {
+                        toastr.warning(errormessage.responseText);
+                    },
+                    failure: function (message) {
+                        $('#preloader-wrapper').toggleClass('hide');
+                    }
+                });
+            }
+
+        }
+
+        function _delete(id) {
+            var cf = confirm('Khôi phục hoạt động người dùng này?');
             if (cf) {
                 $.ajax({
                     type: "POST",
@@ -318,7 +350,13 @@
         }
 
         function Timkiem() {
-            
+            obj = {};
+            obj.Page = 1;
+            obj.Ten = $('#TenSearch').val();
+            obj.SDT = $('#SDTSearch').val();
+            if ($('#chkall').is(':checked')) {
+                obj.TrangThai = true;
+            }
            
             $.ajax({
                 url: '/AdminUser/PageList/',
@@ -326,7 +364,7 @@
                 type: "Get",
                 timeout: 20000,
                 async: false,
-                data: $("#frmSearch").serialize(),
+                data: obj,
 
 
                 success: function (result) {
@@ -357,7 +395,7 @@
         function Clear() {
 
 
-            reloadpage(1);
+            reloadpage();
         }
 
 

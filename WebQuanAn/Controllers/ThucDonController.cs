@@ -15,7 +15,7 @@ using System.IO;
 namespace WebQuanAn.Controllers
 {
    
-    public class ThucDonController : Controller
+    public class ThucDonController : BaseController
     {
         private readonly IThucDon _service;
         private IWebHostEnvironment hostingEnv;
@@ -24,9 +24,10 @@ namespace WebQuanAn.Controllers
             this.hostingEnv = env;
             _service = service;
         }
-
+        
         public IActionResult Index(ThucDonSearchModel model)
         {
+           
            
             if (!model.Page.HasValue) model.Page = 1;
             var listPaged = _service.SearchByCondition(model);
@@ -146,13 +147,24 @@ namespace WebQuanAn.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            if (_service.Delete(id)) 
-                return Json(new { status = 1, title = "", text = "Xoá thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+            ThucDon td = _service.Get(id);
+            td.TrangThai = false;
+            if (_service.Edit(td)!=0) 
+                return Json(new { status = 1, title = "", text = "Thao tác thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             else
-                return Json(new { status = -2, title = "", text = "Xoá không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+                return Json(new { status = -2, title = "", text = "Thao tác không thành công", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
         }
 
-        
+        [HttpPost]
+        public ActionResult Restore(int id)
+        {
+            ThucDon td = _service.Get(id);
+            td.TrangThai = true;
+            if (_service.Edit(td) != 0)
+                return Json(new { status = 1, title = "", text = "Thao tác thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+            else
+                return Json(new { status = -2, title = "", text = "Thao tác không thành công", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+        }    
 
     }
 }

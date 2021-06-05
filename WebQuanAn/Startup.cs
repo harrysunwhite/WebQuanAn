@@ -17,6 +17,7 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Http;
 using WebQuanAn.Services;
 using WebQuanAn.Interfaces;
+using WebQuanAn.Helper;
 
 
 namespace WebQuanAn
@@ -35,18 +36,7 @@ namespace WebQuanAn
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDistributedMemoryCache();           // Đăng ký dịch vụ lưu cache trong bộ nhớ (Session sẽ sử dụng nó)
-            services.AddSession(cfg =>
-            {                    // Đăng ký dịch vụ Session
-                cfg.Cookie.Name = "CartCache";             // Đặt tên Session - tên này sử dụng ở Browser (Cookie)
-                cfg.IdleTimeout = new TimeSpan(0, 30, 0);    // Thời gian tồn tại của Session
-            });
-
-            services.AddSession(cfg =>
-            {                    // Đăng ký dịch vụ Session
-                cfg.Cookie.Name = "page";             // Đặt tên Session - tên này sử dụng ở Browser (Cookie)
-                cfg.IdleTimeout = TimeSpan.FromMinutes(10);    // Thời gian tồn tại của Session
-            });
-
+            services.AddSession(option => { option.IdleTimeout = TimeSpan.FromMinutes(30); });
 
             services.AddDbContextPool<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DataContextConnection")));
 
@@ -54,6 +44,7 @@ namespace WebQuanAn
             services.AddTransient<IPhanLoai,PhanLoaisvc>();
             services.AddTransient<IThucDon, ThucDonsvc>();
             services.AddTransient<IAdminUser, AdminUsersvc>();
+            services.AddTransient<IASMHelper, ASMHelper>();
             
             services.AddControllersWithViews();
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
@@ -76,7 +67,7 @@ namespace WebQuanAn
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

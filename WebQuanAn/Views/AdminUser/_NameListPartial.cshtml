@@ -1,5 +1,7 @@
 ﻿
 
+@using Microsoft.AspNetCore.Http
+@using WebQuanAn.Constants
 
 @model IPagedList<AdminUser>
 @*import this so we get our HTML Helper*@
@@ -8,8 +10,10 @@
 
 @using X.PagedList;
 @using X.PagedList.Web.Common
-<div id="list" >
-   
+<div id="list">
+    @{
+        string userEmail = Context.Session.GetString(SessionKey.Nguoidung.UserName);
+    }
     <div style="min-height:400px">
         <table class="table table table-striped table-bordered text-left w-100 " style="font-size:small">
             <thead class="bg-success">
@@ -53,44 +57,61 @@
                     <td> <img src="~/Images/@item.Hinh" width="100" height="100" /></td>
                     <td>@item.Role</td>
                     <td>@tinhtrang</td>
+                    @if (string.Compare(userEmail, item.Email, true) == 0)
+                    {
+                        <td>
+                            <a class="btn btn-info btn-sm btn-sm active" onclick="Edit(@item.Id)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                        </td>
 
-                    <td><a class="btn btn-info btn-sm btn-sm active" onclick="Edit(@item.Id)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> | <a class="btn btn-danger btn-sm active" onclick="_delete(@item.Id)"> <i class="fa fa-trash"></i></a></td>
+                    }
+                    else
+                    {
+                <td>
+                    <a class="btn btn-info btn-sm btn-sm active" onclick="Edit(@item.Id)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> | @if (item.TrangThai)
+                    {<a class="btn btn-danger btn-sm active" onclick="_delete(@item.Id)"> <i class="fa fa-trash"></i></a>}
+                    else
+                    {
+                        <a class="btn btn-success btn-sm active" onclick="_restore(@item.Id)"> <i class="fa fa-recycle" aria-hidden="true"></i></a>
+                    }
+                </td>
+                    }
+
                 </tr>
                 }
             </tbody>
         </table>
     </div>
-    
-    
+
+
     <div class="text-right">
-      
-                        @{ 
-                            var pageRender = new PagedListRenderOptions
-                            {
-                                MaximumPageNumbersToDisplay = 5,
-                                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-                                DisplayLinkToFirstPage = PagedListDisplayMode.Never,
-                                DisplayLinkToLastPage = PagedListDisplayMode.Never,
-                                DisplayLinkToNextPage = PagedListDisplayMode.Always,
-                                DisplayPageCountAndCurrentLocation = false,
-                                UlElementClasses = new[] { "pagination" },
-                                LiElementClasses = new string[] { "page-item" },
-                                PageClasses = new string[] { "page-link" },
+
+        @{
+            var pageRender = new PagedListRenderOptions
+            {
+                MaximumPageNumbersToDisplay = 5,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayPageCountAndCurrentLocation = false,
+                UlElementClasses = new[] { "pagination" },
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" },
 
 
-                                ContainerDivClasses = new[] { "pagination-container" }
+                ContainerDivClasses = new[] { "pagination-container" }
 
 
-                            };
-                         } 
-         @{ 
+            };
+        }
+        @{
             var searchModel = ViewBag.Data as AdminUserSearchModel;
         }
-       
-             
-        @Html.PagedListPager((IPagedList<AdminUser>)ViewBag.Names, page => Url.Action("PageList", new { page, Ten  = searchModel.Ten,   SDT  = searchModel.SDT,  TrangThai  = searchModel.TrangThai }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(pageRender, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
+
+
+        @Html.PagedListPager((IPagedList<AdminUser>)ViewBag.Names, page => Url.Action("PageList", new { page, Ten = searchModel.Ten, SDT = searchModel.SDT, TrangThai = searchModel.TrangThai }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(pageRender, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
     </div>
-   
+
 
 
 

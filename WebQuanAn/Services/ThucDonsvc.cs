@@ -135,6 +135,10 @@ namespace WebQuanAn.Services
                     {
                      listUnpaged = listUnpaged.Where(x => x.Gia==model.Gia);
                     }
+                
+                    if (model.TrangThai == false) listUnpaged = listUnpaged.Where(x => x.TrangThai == true);
+                   
+                
           
 
                    

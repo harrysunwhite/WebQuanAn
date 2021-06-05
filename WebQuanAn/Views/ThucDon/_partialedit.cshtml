@@ -9,7 +9,7 @@
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group col-12">
-          
+
             <input asp-for="Id" id="idpb" readonly hidden class="form-control" />
 
         </div>
@@ -37,7 +37,7 @@
         <div class="form-group col-6">
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" checked asp-for="TrangThai" /> @Html.DisplayNameFor(model => model.TrangThai)
+                    <input class="form-check-input" asp-for="TrangThai" /> @Html.DisplayNameFor(model => model.TrangThai)
                 </label>
             </div>
         </div>
@@ -45,8 +45,8 @@
             <label for="ImageFile" class="control-label">Hình Ảnh:&nbsp;</label><input asp-for="ImageFile" accept="image/*" id="imgfile" />
             <br />
             <img src="~/Images/@Model.HinhAnh" id="imgTD" width="100" height="100" />
-            
-            <input asp-for="HinhAnh"  hidden id="UrlHinh" />
+
+            <input asp-for="HinhAnh" hidden id="UrlHinh" />
         </div>
 
 
@@ -55,8 +55,10 @@
 </div>
 
 <div>
-  
+
 </div>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 <script>
     function readURLc(input) {
 
@@ -83,7 +85,7 @@
     function UploadFile() {
 
         var fileName = $("#imgfile").val();
-       
+
 
         if (fileName) { // returns true if the string is not empty
             var fileUpload = $("#imgfile").get(0);

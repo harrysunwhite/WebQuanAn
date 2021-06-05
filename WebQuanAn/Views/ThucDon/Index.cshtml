@@ -23,28 +23,41 @@
             <button type="button" class="btn btn-sm btn-success mr-2" onclick="Create()" id="btCreateN"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;Tạo mới</button>
             <button type="button" class="btn btn-success mr-2 btn-sm" onclick="Clear()" id="btSeach"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Làm mới</button>
         </div>
-        <div class="d-flex flex-wrap m-2">
+        <div class="row col-12">
+            <div class="d-flex flex-wrap m-2 col-6">
 
-            @using (Html.BeginForm(null, null, FormMethod.Get, new { name = "frmSearch", id = "frmSearch", enctype = "multipart/form-data" }))
-            {
-                @Html.AntiForgeryToken()
-
-
-                <input asp-for="TenMon" id="TenMonSearch" placeholder="Filter by TenMon" class="mr-2 mb-2 form-control-sm" />
+                @using (Html.BeginForm(null, null, FormMethod.Get, new { name = "frmSearch", id = "frmSearch", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
 
 
-                <input asp-for="Gia" id="GiaSearch" placeholder="Filter by Gia" class="mr-2 mb-2 form-control-sm" />
+                    <input asp-for="TenMon" id="TenMonSearch" placeholder="Tìm theo tên món" class="mr-2 mb-2 form-control-sm" />
+
+
+                    <input asp-for="Gia" id="GiaSearch" placeholder="Tìm theo Giá" class="mr-2 mb-2 form-control-sm" />
 
 
 
 
 
-                <button type="button" class="btn btn-success btn-sm mr-2 " onclick="Timkiem()" id="btSeach"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Lọc</button>
+                    <button type="button" class="btn btn-success btn-sm mr-2 " onclick="Timkiem()" id="btSeach"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Lọc</button>
 
-            }
+                }
 
+            </div>
+            <div class="ml-auto col-2">
+
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="chkall"  onchange="reloadpage()" />
+                    <label class="form-check-label">Hiện toàn bộ</label>
+                </div>
+
+
+            </div>
         </div>
 
+        
 
 
 
@@ -118,7 +131,7 @@
                                 if (result.status >= 1) {
 
                                     toastr.success(result.text);
-                                    reloadpage(1);
+                                    reloadpage();
                                 }
                                 else {
                                     toastr.warning(result.text);
@@ -153,7 +166,7 @@
                                 $('#preloader-wrapper').toggleClass('hide');
                                 if (result.status >= 1) {
                                     toastr.success(result.text);
-                                    reloadpage(1);
+                                    reloadpage();
                                 }
                                 else {
                                     alert("Cập nhật thất bại")
@@ -171,11 +184,11 @@
                 });
                 $("#btclose").click(function () {
 
-                    reloadpage(1);
+                    reloadpage();
                 });
                 $("#btcloseins").click(function () {
 
-                    reloadpage(1);
+                    reloadpage();
                 });
 
 
@@ -184,10 +197,15 @@
 
 
 
-        function reloadpage(page) {
+        function reloadpage() {
             obj = {};
+            obj.Page = 1
+            if ($('#chkall').is(':checked')) {
+                obj.TrangThai = true;
+            } else { obj.TrangThai = false }
 
-            obj.Page = page;
+
+
             $.ajax({
                 url: '/ThucDon/PageList/',
 
@@ -210,7 +228,10 @@
             });
         }
 
-
+        function reloadAll() {
+          
+            
+        }
 
 
         function Edit(id_) {
@@ -275,7 +296,7 @@
 
 
         function _delete(id) {
-            var cf = confirm('Bạn muốn xoá bản ghi này?');
+            var cf = confirm('Bạn muốn tạm ngung phục vụ món này?');
             if (cf) {
                 $.ajax({
                     type: "POST",
@@ -303,7 +324,43 @@
 
         }
 
+        function _restore(id) {
+            var cf = confirm('Bạn muốn khôi phục  món này?');
+            if (cf) {
+                $.ajax({
+                    type: "POST",
+                    url: "/ThucDon/Restore",
+                    data: { "id": id },
+                    success: function (result) {
+                        $('#preloader-wrapper').toggleClass('hide');
+                        if (result.status >= 1) {
+                            toastr.success(result.text);
+
+                            reloadpage();
+                        }
+                        else {
+                            toastr.warning(result.text);
+                        }
+                    },
+                    error: function (errormessage) {
+                        toastr.warning(errormessage.responseText);
+                    },
+                    failure: function (message) {
+                        $('#preloader-wrapper').toggleClass('hide');
+                    }
+                });
+            }
+
+        }
+
         function Timkiem() {
+            obj = {};
+            obj.Page = 1
+            if ($('#chkall').is(':checked')) {
+                obj.TrangThai = true;
+            } else { obj.TrangThai = false }
+            obj.TenMon = $('#TenMonSearch').val();
+            obj.Gia = $('#GiaSearch').val();
 
 
             $.ajax({
@@ -312,7 +369,7 @@
                 type: "Get",
                 timeout: 20000,
                 async: false,
-                data: $("#frmSearch").serialize(),
+                data: obj,
 
 
                 success: function (result) {
@@ -343,7 +400,7 @@
         function Clear() {
 
 
-            reloadpage(1);
+            reloadpage();
         }
 
 

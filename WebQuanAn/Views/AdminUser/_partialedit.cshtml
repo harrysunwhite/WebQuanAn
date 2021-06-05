@@ -1,6 +1,6 @@
 
 
-@model WebQuanAn.Models.AdminUser
+@model WebQuanAn.Models.UpdateModel;
 
 <h4>Cập nhật thông tin</h4>
 <hr />
@@ -35,16 +35,7 @@
             <span asp-validation-for="SDT" class="text-danger"></span>
         </div>
 
-        <div class="form-group col-6"style="display:none">
-            <label asp-for=" MatKhau" class="control-label"></label>
-            <input asp-for="MatKhau" class="form-control"  />
-            <span asp-validation-for="MatKhau" class="text-danger"></span>
-        </div>
-        <div class="form-group col-6" style="display:none">
-            <label asp-for=" MatkhauCF" class="control-label"></label>
-            <input asp-for="MatkhauCF" class="form-control"  />
-            <span asp-validation-for="MatkhauCF" class="text-danger"></span>
-        </div>
+      
 
 
 
@@ -59,7 +50,7 @@
 
             <label class="control-label">&nbsp;</label>
             <div class="form-check">
-                <input type="checkbox" class="form-check-input" checked asp-for="TrangThai" checked">
+                <input type="checkbox" class="form-check-input" asp-for="TrangThai" checked">
                 <label class="form-check-label" asp-for="TrangThai"></label>
             </div>
 
@@ -70,7 +61,7 @@
             <br />
             <img src="~/Images/unchoseUser.png" id="imgUser" width="100" height="100" />
 
-            <input asp-for="Hinh"   id="UrlHinh" />
+            <input asp-for="Hinh" id="UrlHinh" />
         </div>
 
 
@@ -79,8 +70,10 @@
 </div>
 
 <div>
-  
+
 </div>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 <script>
     function readURLc(input) {
 

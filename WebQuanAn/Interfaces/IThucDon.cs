@@ -15,6 +15,7 @@ namespace WebQuanAn.Interfaces
         ThucDon Get(int id);
         int Edit(ThucDon model);
         bool Delete(int Id);
+        
         IEnumerable<PhanLoai> PhanloaiNav();
         IPagedList<ThucDon> SearchByCondition(ThucDonSearchModel model);
     }

@@ -62,6 +62,7 @@ namespace WebQuanAn.Models
         public String TenMon { get; set; }
 
         public Decimal? Gia { get; set; }
+        public bool TrangThai { get; set; }
     }
 }
 

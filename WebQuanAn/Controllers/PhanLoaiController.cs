@@ -12,7 +12,7 @@ using WebQuanAn.Interfaces;
 namespace WebQuanAn.Controllers
 {
     
-    public class PhanLoaiController : Controller
+    public class PhanLoaiController : BaseController
     {
         private readonly IPhanLoai _service;
         public PhanLoaiController(IPhanLoai service)
@@ -30,7 +30,7 @@ namespace WebQuanAn.Controllers
             return View();
         }
        
-        // GET: DepartmentController
+       
         [HttpGet]
         
         public ActionResult PageList(PhanLoaiSearchModel model)

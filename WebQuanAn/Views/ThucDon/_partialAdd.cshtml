@@ -29,7 +29,7 @@
             <span asp-validation-for="MaLoai" class="text-danger"></span>
         </div>
 
-        <div class="form-group col-6">
+        <div class="form-group col-6" style="display:none">
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" checked asp-for="TrangThai" /> @Html.DisplayNameFor(model => model.TrangThai)
@@ -40,7 +40,7 @@
             <label for="ImageFile" class="control-label">Hình Ảnh:&nbsp;</label><input asp-for="ImageFile" accept="image/*" id="imgfile" />
             <br />
             <img src="~/Images/unchose.jpg" id="imgTD" width="100" height="100" />
-            
+
             <input asp-for="HinhAnh" value="unchose.jpg" hidden id="UrlHinh" />
         </div>
 
@@ -49,6 +49,8 @@
 
     </div>
 </div>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 <script>
     function readURLc(input) {
 
