@@ -17,7 +17,7 @@ namespace WebQuanAn.Services
 {
     public class AdminUsersvc : IAdminUser
     {
-        private static int pageSize = 6;
+        private static int pageSize = 4;
         private readonly DataContext _context;
         private readonly IASMHelper _aSMHelper;
        
@@ -195,7 +195,7 @@ namespace WebQuanAn.Services
         {
             try
             {
-                return _context.AdminUser.Where(p => p.Email.Equals(viewLogin.Email) && p.MatKhau.Equals(_aSMHelper.Mahoa(viewLogin.Password))).FirstOrDefault();
+                return _context.AdminUser.Where(p => p.Email.Equals(viewLogin.Email) && p.MatKhau.Equals(_aSMHelper.Mahoa(viewLogin.Password))&& p.TrangThai).FirstOrDefault();
             }
             catch
             {

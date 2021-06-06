@@ -18,6 +18,7 @@ namespace WebQuanAn.Interfaces
         
         IEnumerable<PhanLoai> PhanloaiNav();
         IPagedList<ThucDon> SearchByCondition(ThucDonSearchModel model);
+
     }
 }
 

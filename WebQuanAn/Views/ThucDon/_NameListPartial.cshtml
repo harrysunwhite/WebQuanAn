@@ -8,17 +8,17 @@
 
 @using X.PagedList;
 @using X.PagedList.Web.Common
-<div id="list" >
-   
+<div id="list">
+
     <div style="min-height:400px">
         <table class="table table table-striped table-bordered text-left w-100 " style="font-size:small">
             <thead class="bg-success">
                 <tr>
-                    
+
                     <th>
                         Tên món
                     </th>
-                    <th>
+                    <th style="width:200px">
                         Mô tả
                     </th>
                     <th>
@@ -42,7 +42,7 @@
                 {
                     var trangthai = item.TrangThai ? "Khả dụng" : "Không khả dụng";
                     <tr>
-                        
+
                         <td class="align-middle">@item.TenMon</td>
                         <td class="align-middle">@item.Mota</td>
                         <td class="align-middle">@item.Gia.ToString("n0").Replace(',', '.')</td>
@@ -57,43 +57,44 @@
                             {
                                 <a class="btn btn-success btn-sm active" onclick="_restore(@item.Id)"> <i class="fa fa-recycle" aria-hidden="true"></i></a>
                             }
+                            <a class="btn btn-dark btn-sm active" onclick="_Detail(@item.Id)"> <i class="fa fa-info" aria-hidden="true" data-toggle="modal" data-target="#ModalDetail"></i></a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    
-    
+
+
     <div class="text-right">
-      
-                        @{ 
-                            var pageRender = new PagedListRenderOptions
-                            {
-                                MaximumPageNumbersToDisplay = 5,
-                                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-                                DisplayLinkToFirstPage = PagedListDisplayMode.Never,
-                                DisplayLinkToLastPage = PagedListDisplayMode.Never,
-                                DisplayLinkToNextPage = PagedListDisplayMode.Always,
-                                DisplayPageCountAndCurrentLocation = false,
-                                UlElementClasses = new[] { "pagination" },
-                                LiElementClasses = new string[] { "page-item" },
-                                PageClasses = new string[] { "page-link" },
+
+        @{
+            var pageRender = new PagedListRenderOptions
+            {
+                MaximumPageNumbersToDisplay = 5,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayPageCountAndCurrentLocation = false,
+                UlElementClasses = new[] { "pagination" },
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" },
 
 
-                                ContainerDivClasses = new[] { "pagination-container" }
+                ContainerDivClasses = new[] { "pagination-container" }
 
 
-                            };
-                         } 
-         @{ 
+            };
+        }
+        @{
             var searchModel = ViewBag.Data as ThucDonSearchModel;
         }
-       
-             
-        @Html.PagedListPager((IPagedList<ThucDon>)ViewBag.Names, page => Url.Action("PageList", new { page, TenMon  = searchModel.TenMon,  Gia  = searchModel.Gia }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(pageRender, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
+
+
+        @Html.PagedListPager((IPagedList<ThucDon>)ViewBag.Names, page => Url.Action("PageList", new { page, TenMon = searchModel.TenMon, Gia = searchModel.Gia }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(pageRender, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
     </div>
-   
+
 
 
 

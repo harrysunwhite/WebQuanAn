@@ -31,6 +31,7 @@ namespace WebQuanAn.Controllers
            
             if (!model.Page.HasValue) model.Page = 1;
             var listPaged = _service.SearchByCondition(model);
+            ViewData["MaLoai"] = new SelectList(_service.PhanloaiNav(), "Id", "TenLoai");
             ViewBag.Names = listPaged;
             ViewBag.Data = model;
             return View();
@@ -106,8 +107,23 @@ namespace WebQuanAn.Controllers
             }    
                 
         }
+        [HttpGet]
 
-       
+        public ActionResult Detail(int id)
+        {
+            if (_service.Get(id) == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                ViewData["MaLoai"] = new SelectList(_service.PhanloaiNav(), "Id", "TenLoai", _service.Get(id).MaLoai);
+                return PartialView("_partialDetail", _service.Get(id));
+            }
+
+        }
+
+
         [HttpPost]
        
         public ActionResult Edit( ThucDon model)

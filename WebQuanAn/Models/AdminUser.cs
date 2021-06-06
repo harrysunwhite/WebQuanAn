@@ -53,7 +53,7 @@ namespace WebQuanAn.Models
         public IFormFile FileHinh { get; set; }
 
 
-        [Required(ErrorMessage = "This field is required")]
+        [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
         [RegularExpression(@"((09|03|07|08|05)+([0-9]{8})\b)", ErrorMessage = "Invail phone number")]
         [StringLength(15)]
         public string SDT { get; set; }

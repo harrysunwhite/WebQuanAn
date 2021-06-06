@@ -19,6 +19,7 @@ namespace WebQuanAn.Migrations
                     MatKhau = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     Hinh = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: true),
                     SDT = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false),
                     TrangThai = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

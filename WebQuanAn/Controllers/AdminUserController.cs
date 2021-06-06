@@ -99,7 +99,18 @@ namespace WebQuanAn.Controllers
                 return PartialView("_partialedit", _service.GetUpdate(id));
         }
 
-       
+        public ActionResult Detail(int id)
+        {
+            
+            if (_service.Get(id) == null)
+            {
+                return NotFound();
+            }
+            else
+                return PartialView("_partialDetail", _service.Get(id));
+        }
+
+
         [HttpPost]
        
         public ActionResult Edit( UpdateModel model)

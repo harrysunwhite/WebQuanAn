@@ -10,7 +10,7 @@ using WebQuanAn.Models;
 namespace WebQuanAn.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210603102815_update1")]
+    [Migration("20210605103518_update1")]
     partial class update1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,10 @@ namespace WebQuanAn.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("Sdt")
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SDT")
                         .IsRequired()
                         .HasMaxLength(15)
                         .IsUnicode(false)

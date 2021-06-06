@@ -46,7 +46,7 @@ namespace WebQuanAn.Controllers
 
 
                 string filePath = hostingEnv.WebRootPath + @"\Images\" + DateTime.Now.ToString("ddmmyyyy_HHm") + "_" + $@"{ filename}";
-                Console.WriteLine(filePath);
+             
                 size += file[0].Length;
 
                 using (FileStream fs = System.IO.File.Create(filePath))

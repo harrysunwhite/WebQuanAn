@@ -46,8 +46,7 @@ namespace WebQuanAn.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Hinh)
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
+                    .HasMaxLength(250).HasColumnType("nvarchar(250)");
 
                 entity.Property(e => e.Ho)
                     .IsRequired()
@@ -146,6 +145,7 @@ namespace WebQuanAn.Models
                 entity.Property(e => e.Ten)
                     .IsRequired()
                     .HasMaxLength(50);
+                entity.Property(e => e.GioiTinh).IsRequired();
             });
 
             modelBuilder.Entity<PhanLoai>(entity =>
@@ -163,7 +163,7 @@ namespace WebQuanAn.Models
 
                 entity.Property(e => e.Gia).HasColumnType("money");
 
-                entity.Property(e => e.HinhAnh).HasMaxLength(250);
+                entity.Property(e => e.HinhAnh).HasMaxLength(250).HasColumnType("nvarchar(250)");
 
                 entity.Property(e => e.TenMon)
                     .IsRequired()

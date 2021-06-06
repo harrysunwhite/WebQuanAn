@@ -15,7 +15,7 @@ namespace WebQuanAn.Services
 {
     public class ThucDonsvc : IThucDon
     {
-        private static int pageSize = 6;
+        private static int pageSize = 4;
         private readonly DataContext _context;
 
         public ThucDonsvc(DataContext context)
@@ -126,20 +126,19 @@ namespace WebQuanAn.Services
                    {
                     listUnpaged = listUnpaged.Where(x => x.TenMon.ToUpper().Contains(model.TenMon.ToUpper()));
                    }
-                        
-                     
-         
 
-                if(!string.IsNullOrWhiteSpace(model.Gia.ToString())) 
-                                
-                    {
-                     listUnpaged = listUnpaged.Where(x => x.Gia==model.Gia);
-                    }
-                
+
+
+
+            if (model.Gia == 1) listUnpaged = listUnpaged.Where(x => x.Gia < 100000);
+            if (model.Gia == 2) listUnpaged = listUnpaged.Where(x => x.Gia >= 100000 && x.Gia <= 300000);
+            if (model.Gia == 3) listUnpaged = listUnpaged.Where(x => x.Gia > 300000);
+            if (model.MaLoai != 0) listUnpaged = listUnpaged.Where(x => x.MaLoai == model.MaLoai);
+
                     if (model.TrangThai == false) listUnpaged = listUnpaged.Where(x => x.TrangThai == true);
                    
                 
-          
+            
 
                    
                 var listPaged = listUnpaged.ToPagedList(model.Page ?? 1, pageSize);

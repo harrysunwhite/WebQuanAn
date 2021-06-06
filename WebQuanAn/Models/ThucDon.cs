@@ -18,7 +18,7 @@ namespace WebQuanAn.Models
         public  Int32  Id { get; set; }
 
         [Display(Name = "Tên món ăn")]
-        [Required(ErrorMessage = "This field is required")]
+        [Required(ErrorMessage = "Nhập tên món ăn")]
         [StringLength(100)]
         public  String  TenMon { get; set; }
         [Display(Name = "Mô tả")]
@@ -26,7 +26,7 @@ namespace WebQuanAn.Models
         public  String  Mota { get; set; }
 
         [Display(Name = "Giá")]
-        [Required(ErrorMessage = "This field is required")]
+        [Required(ErrorMessage = "Nhập Giá")]
        
         public  Decimal  Gia { get; set; }
 
@@ -43,7 +43,7 @@ namespace WebQuanAn.Models
         [Display(Name = "Loại thức ăn")]
         public  Int32  MaLoai { get; set; }
 
-        [Display(Name = "Loại thức ăn")]
+        
        
         public virtual PhanLoai MaLoaiNavigation { get; set; }
         public ICollection<CTHD> CTHDs { get; set; }
@@ -62,6 +62,7 @@ namespace WebQuanAn.Models
         public String TenMon { get; set; }
 
         public Decimal? Gia { get; set; }
+        public int MaLoai { get; set; }
         public bool TrangThai { get; set; }
     }
 }

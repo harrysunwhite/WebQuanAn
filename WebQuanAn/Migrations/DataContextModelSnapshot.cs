@@ -34,8 +34,7 @@ namespace WebQuanAn.Migrations
 
                     b.Property<string>("Hinh")
                         .HasMaxLength(250)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(250)");
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Ho")
                         .IsRequired()
@@ -138,6 +137,9 @@ namespace WebQuanAn.Migrations
                     b.Property<string>("FacebookLink")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("GioiTinh")
+                        .HasColumnType("int");
 
                     b.Property<string>("Ho")
                         .IsRequired()

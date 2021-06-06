@@ -24,7 +24,7 @@
             <button type="button" class="btn btn-success mr-2 btn-sm" onclick="Clear()" id="btSeach"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Làm mới</button>
         </div>
         <div class="row col-12">
-            <div class="d-flex flex-wrap m-2 col-6">
+            <div class="d-flex flex-wrap m-2 col-8">
 
                 @using (Html.BeginForm(null, null, FormMethod.Get, new { name = "frmSearch", id = "frmSearch", enctype = "multipart/form-data" }))
                 {
@@ -34,7 +34,17 @@
                     <input asp-for="TenMon" id="TenMonSearch" placeholder="Tìm theo tên món" class="mr-2 mb-2 form-control-sm" />
 
 
-                    <input asp-for="Gia" id="GiaSearch" placeholder="Tìm theo Giá" class="mr-2 mb-2 form-control-sm" />
+
+                    <select class="form-control-sm mr-2" id="GiaSearch">
+                        <option value="0">Chọn mức giá</option>
+                        <option value="1">Dưới 100</option>
+                        <option value="2">100 - 300 </option>
+                        <option value="3">Trên 300</option>
+
+                    </select>
+                    <select asp-for="MaLoai" class="form-control-sm mr-1" id="MaLoaiSearch" asp-items="ViewBag.MaLoai">
+                        <option value="0">Chọn Loại</option>
+                    </select>
 
 
 
@@ -49,7 +59,7 @@
 
 
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="chkall"  onchange="reloadpage()" />
+                    <input type="checkbox" class="form-check-input" id="chkall" onchange="reloadpage()" />
                     <label class="form-check-label">Hiện toàn bộ</label>
                 </div>
 
@@ -57,7 +67,7 @@
             </div>
         </div>
 
-        
+
 
 
 
@@ -97,11 +107,31 @@
         </div>
     </div>
 </div>
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thông tin chi tiết</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="detailContent">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
+            </div>
+        </div>
+    </div>
+</div>
 
 @section scripts{
     <script src="~/js/toastr.js"></script>
-    <script src="/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script>
@@ -113,6 +143,8 @@
         var $myModalContentins = $("#myModalContentins");
         var $myModalTitle = $("#myModalTitle");
         var $myModalTitleins = $("#myModalTitleins");
+        var $modaldetail = $('#exampleModal');
+        var $detailContent = $("#detailContent");
         $(document).ready(
 
             function () {
@@ -121,10 +153,10 @@
                     if ($("#frm").valid()) {
 
                         UploadFile();
-                      
+
                         $.ajax({
                             type: "POST",
-                            url:  "/ThucDon/Add",
+                            url: "/ThucDon/Add",
                             data: $("#frm").serializeArray(),
                             success: function (result) {
                                 $('#preloader-wrapper').toggleClass('hide');
@@ -156,7 +188,7 @@
                         UploadFile();
                         var fileName = $("#imgfile").val();
                         var actionURl = fileName ? "/ThucDon/Edit" : "/ThucDon/EditNoImage";
-                        
+
                         $.ajax({
                             type: "POST",
                             url: actionURl,
@@ -229,8 +261,8 @@
         }
 
         function reloadAll() {
-          
-            
+
+
         }
 
 
@@ -253,6 +285,35 @@
                     $('#btSave').hide();
                     $('#btupdate').show();
                     $modal.modal('show');
+
+
+                    $('#preloader-wrapper').toggleClass('hide');
+                },
+                failure: function (message) {
+                    $('#preloader-wrapper').toggleClass('hide');
+                }
+            });
+        }
+
+        function _Detail(id_) {
+            $detailContent.html("");
+
+            $.ajax({
+                url: '/ThucDon/Detail/',
+
+                type: "Get",
+                timeout: 20000,
+
+                async: true,
+                data: {
+                    id: id_
+                },
+
+                success: function (result) {
+
+
+                    $detailContent.html(result);
+                    $modaldetail.modal('show');
 
 
                     $('#preloader-wrapper').toggleClass('hide');
@@ -354,6 +415,7 @@
         }
 
         function Timkiem() {
+            
             obj = {};
             obj.Page = 1
             if ($('#chkall').is(':checked')) {
@@ -361,7 +423,7 @@
             } else { obj.TrangThai = false }
             obj.TenMon = $('#TenMonSearch').val();
             obj.Gia = $('#GiaSearch').val();
-
+            obj.MaLoai = $('#MaLoaiSearch').val();
 
             $.ajax({
                 url: '/ThucDon/PageList/',

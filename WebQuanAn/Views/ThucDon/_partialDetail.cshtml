@@ -1,0 +1,29 @@
+﻿@model WebQuanAn.Models.ThucDon
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-5">
+            <img src="images/@Model.HinhAnh" class="w-100" alt="">
+        </div>
+        <div class="col-7">
+            <ul class="list-group mt-2">
+                <li class="list-group-item"><h1 class="h2 font-weight-bold">@Model.TenMon</h1></li>
+                <li class="list-group-item"><h2 class="h3 text-danger">@Model.Gia.ToString("n0").Replace(',', '.') <sup>đ</sup> </h2></li>
+
+                <li class="list-group-item">Loại: @Model.MaLoaiNavigation.TenLoai</li>
+
+            </ul>
+        </div>
+
+
+    </div>
+
+    <div class="row p-3">
+
+        <p class="lead">
+            @Model.Mota
+        </p>
+
+    </div>
+</div>

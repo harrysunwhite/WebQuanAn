@@ -203,7 +203,7 @@
             <!-- Brand Logo -->
             <a asp-action="index" asp-controller="phanloai" class="brand-link">
                 <img src="~/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">Hello,@FullName</span>
+                <span class="brand-text font-weight-light">Xin chào,@FullName</span>
             </a>
 
 
@@ -240,7 +240,7 @@
         <div class="p-3">
             @RenderBody()
         </div>
-       
+
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -255,7 +255,7 @@
                     <div class="modal-body">
                         @using (Html.BeginForm(null, null, FormMethod.Get, new { name = "frmChange", id = "frmChange", enctype = "multipart/form-data" }))
                         {
-                            
+
                         }
                         <button class="btn btn-lg btn-primary btn-block text-uppercase" id="btChangePass">Cập nhật mật khẩu</button>
                     </div>
@@ -277,7 +277,7 @@
             <b>Version</b> 3.1.0
         </div>
     </footer>
-   
+
 
 
     <!-- Control Sidebar -->
