@@ -80,16 +80,15 @@ namespace WebQuanAn.Controllers
             
          if(ModelState.IsValid)
             {
-                if(string.Compare(model.HinhAnh,"unchose.jpg",false)!=0)
-                model.HinhAnh = DateTime.Now.ToString("ddmmyyyy_HHm") + "_" + model.HinhAnh;
 
 
-                if (_service.Add(model)!=0)
-               return Json(new { status = 1, title = "", text = "Thêm thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+                int id = _service.Add(model);
+                if (id!=0)
+               return Json(new { status = id, title = "", text = "Thêm thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             else
                return Json(new { status = -2, title = "", text = "Thêm không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             }
-            return NoContent();
+            return Json(model);
             
         } 
         [HttpGet]
@@ -102,8 +101,8 @@ namespace WebQuanAn.Controllers
             }
             else
             {
-                ViewData["MaLoai"] = new SelectList(_service.PhanloaiNav(), "Id", "TenLoai", _service.Get(id).MaLoai);
-                return PartialView("_partialedit", _service.Get(id));
+                ViewData["MaLoai"] = new SelectList(_service.PhanloaiNav(), "Id", "TenLoai", _service.GetUpdate(id).uMaLoai);
+                return PartialView("_partialedit", _service.GetUpdate(id));
             }    
                 
         }
@@ -126,45 +125,31 @@ namespace WebQuanAn.Controllers
 
         [HttpPost]
        
-        public ActionResult Edit( ThucDon model)
+        public ActionResult Edit( ThucDonUpdateModel model)
         {
 
            if(ModelState.IsValid)
             {
-               
-                    model.HinhAnh = DateTime.Now.ToString("ddmmyyyy_HHm") + "_" + model.HinhAnh;
-                if (_service.Edit(model)!=0)
-                return Json(new { status = 1, title = "", text = "Cập nhật thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
+                int id = _service.Edit(model);
+
+
+                if (id!=0)
+                return Json(new { status = id, title = "", text = "Cập nhật thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             else
                 return Json(new { status = -2, title = "", text = "Cập nhật không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             }
-            return NoContent();
-           
-        }
-
-        [HttpPost]
-
-        public ActionResult EditNoImage(ThucDon model)
-        {
-
-            if (ModelState.IsValid)
-            {
-               
-                if (_service.Edit(model) != 0)
-                    return Json(new { status = 1, title = "", text = "Cập nhật thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
-                else
-                    return Json(new { status = -2, title = "", text = "Cập nhật không thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
-            }
-            return NoContent();
+           return Json(model);
 
         }
+
+       
 
 
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            ThucDon td = _service.Get(id);
-            td.TrangThai = false;
+            ThucDonUpdateModel td = _service.GetUpdate(id);
+            td.uTrangThai = false;
             if (_service.Edit(td)!=0) 
                 return Json(new { status = 1, title = "", text = "Thao tác thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             else
@@ -174,8 +159,8 @@ namespace WebQuanAn.Controllers
         [HttpPost]
         public ActionResult Restore(int id)
         {
-            ThucDon td = _service.Get(id);
-            td.TrangThai = true;
+            ThucDonUpdateModel td = _service.GetUpdate(id);
+            td.uTrangThai = true;
             if (_service.Edit(td) != 0)
                 return Json(new { status = 1, title = "", text = "Thao tác thành công.", obj = "" }, new Newtonsoft.Json.JsonSerializerSettings());
             else

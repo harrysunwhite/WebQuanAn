@@ -132,8 +132,8 @@
 @section scripts{
     <script src="~/js/toastr.js"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
     <script>
 
         var $id = "";
@@ -152,7 +152,7 @@
                 $("#btSave").click(function () {
                     if ($("#frm").valid()) {
 
-                        UploadFile();
+                       
 
                         $.ajax({
                             type: "POST",
@@ -163,6 +163,8 @@
                                 if (result.status >= 1) {
 
                                     toastr.success(result.text);
+
+                                    UploadFile(result.status);
                                     reloadpage();
                                 }
                                 else {
@@ -185,19 +187,20 @@
 
                 $("#btupdate").click(function () {
                     if ($("#frm").valid()) {
-                        UploadFile();
-                        var fileName = $("#imgfile").val();
-                        var actionURl = fileName ? "/ThucDon/Edit" : "/ThucDon/EditNoImage";
+                       
+                       
 
                         $.ajax({
                             type: "POST",
-                            url: actionURl,
+                            url: "/ThucDon/Edit",
                             dataType: "json",
                             data: $("#frm").serialize(),
                             success: function (result) {
                                 $('#preloader-wrapper').toggleClass('hide');
                                 if (result.status >= 1) {
                                     toastr.success(result.text);
+
+                                    UploadFile(result.status);
                                     reloadpage();
                                 }
                                 else {
@@ -415,7 +418,7 @@
         }
 
         function Timkiem() {
-            
+
             obj = {};
             obj.Page = 1
             if ($('#chkall').is(':checked')) {

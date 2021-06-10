@@ -1,10 +1,12 @@
 ﻿@model WebQuanAn.Models.ThucDon
 
-
+@{ 
+    var imgName = Model.Id + "_" + Model.HinhAnh;
+}
 <div class="container-fluid">
     <div class="row">
         <div class="col-5">
-            <img src="images/@Model.HinhAnh" class="w-100" alt="">
+            <img src="images/@imgName" class="w-100" alt="">
         </div>
         <div class="col-7">
             <ul class="list-group mt-2">

@@ -10,29 +10,29 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group col-6" style="display:none">
             <label class="control-label">Id</label>
-            <input asp-for="Id" id="idpb" readonly class="form-control" />
+            <input asp-for="uId" id="idpb" readonly class="form-control" />
 
         </div>
 
         <div class="form-group col-6">
-            <label asp-for=" Ho" class="control-label"></label>
-            <input asp-for="Ho" class="form-control" required />
-            <span asp-validation-for="Ho" class="text-danger"></span>
+            <label asp-for=" uHo" class="control-label"></label>
+            <input asp-for="uHo" class="form-control" />
+            <span asp-validation-for="uHo" class="text-danger"></span>
         </div>
         <div class="form-group col-6">
-            <label asp-for=" Ten" class="control-label"></label>
-            <input asp-for="Ten" class="form-control" required />
-            <span asp-validation-for="Ten" class="text-danger"></span>
+            <label asp-for=" uTen" class="control-label"></label>
+            <input asp-for="uTen" class="form-control" />
+            <span asp-validation-for="uTen" class="text-danger"></span>
         </div>
         <div class="form-group col-6">
-            <label asp-for=" Email" class="control-label"></label>
-            <input asp-for="Email" class="form-control" required />
-            <span asp-validation-for="Email" class="text-danger"></span>
+            <label asp-for=" uEmail" class="control-label"></label>
+            <input asp-for="uEmail" readonly class="form-control" />
+            <span asp-validation-for="uEmail" class="text-danger"></span>
         </div>
         <div class="form-group col-6">
-            <label asp-for=" SDT" class="control-label"></label>
-            <input asp-for="SDT" class="form-control" required />
-            <span asp-validation-for="SDT" class="text-danger"></span>
+            <label asp-for=" uSDT" class="control-label"></label>
+            <input asp-for="uSDT" class="form-control" />
+            <span asp-validation-for="uSDT" class="text-danger"></span>
         </div>
 
 
@@ -40,28 +40,31 @@
 
 
         <div class="form-group col-6">
-            <label asp-for="Role" class="control-label"></label>
-            <select asp-for="Role" class="form-control" asp-items="Html.GetEnumSelectList<Role>()">
+            <label asp-for="uRole" class="control-label"></label>
+            <select asp-for="uRole" class="form-control" asp-items="Html.GetEnumSelectList<Role>()">
                 <option value="0">Chọn quyền</option>
             </select>
-            <span asp-validation-for="Role" class="text-danger"></span>
+            <span asp-validation-for="uRole" class="text-danger"></span>
         </div>
         <div class="form-group col-6">
 
             <label class="control-label">&nbsp;</label>
             <div class="form-check">
-                <input type="checkbox" class="form-check-input" asp-for="TrangThai" checked">
-                <label class="form-check-label" asp-for="TrangThai"></label>
+                <input type="checkbox" class="form-check-input" asp-for="uTrangThai" checked">
+                <label class="form-check-label" asp-for="uTrangThai"></label>
             </div>
 
 
         </div>
+        @{
+            var hinh = Model.uId + "_" + Model.uHinh;
+        }
         <div class="form-group col-6">
-            <label for="ImageFile" class="control-label">Hình Ảnh:&nbsp;</label><input asp-for="FileHinh" accept="image/*" id="imgfile" />
+            <label for="ImageFile" class="control-label">Hình Ảnh:&nbsp;</label><input asp-for="uFileHinh" accept="image/*" id="imgfile" />
             <br />
-            <img src="~/Images/unchoseUser.png" id="imgUser" width="100" height="100" />
+            <img src="~/Images/@hinh" id="imgUser" width="100" height="100" />
 
-            <input asp-for="Hinh" id="UrlHinh" />
+            <input asp-for="uHinh" hidden id="UrlHinh" />
         </div>
 
 
@@ -72,7 +75,7 @@
 <div>
 
 </div>
-<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 <script>
     function readURLc(input) {
@@ -97,11 +100,13 @@
 
 
     });
-    function UploadFile() {
+    function UploadFile(id) {
+
 
         var fileName = $("#imgfile").val();
 
-
+        var ImgName = $('#UrlHinh').text();
+       
         if (fileName) { // returns true if the string is not empty
             var fileUpload = $("#imgfile").get(0);
 
@@ -109,13 +114,14 @@
 
             var data = new FormData();
 
-            data.append(files[0].name, files[0]);
+            data.append(files[0].name, files[0], id + "_" + files[0].name);
+
 
             $.ajax({
 
                 type: "POST",
 
-                url: "/PageHelper/CoppyImage",
+                url: "/PageHelper/CoppyImage/",
 
                 contentType: false,
 
@@ -148,10 +154,14 @@
         }
 
 
+
     }
 </script>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
 
 

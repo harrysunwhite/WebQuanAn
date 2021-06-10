@@ -60,6 +60,7 @@
         </div>
         <div class="form-group col-6">
             <label for="ImageFile" class="control-label">Hình Ảnh:&nbsp;</label><input asp-for="FileHinh" accept="image/*" id="imgfile" />
+            <span asp-validation-for="FileHinh" class="text-danger"></span>
             <br />
             <img src="~/Images/unchoseUser.png" id="imgUser" width="100" height="100" />
 
@@ -71,10 +72,9 @@
     </div>
 </div>
 
+
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
-
-
 <script>
     function readURLc(input) {
 
@@ -98,31 +98,73 @@
 
 
     });
-    function UploadFile() {
-
+    function UploadFile(id) {
+        
         var fileName = $("#imgfile").val();
 
+        var ImgName = $('#UrlHinh').val();
+       
+        if (ImgName != "unchoseUser.png") {
+            if (fileName) { // returns true if the string is not empty
+                var fileUpload = $("#imgfile").get(0);
 
-        if (fileName) { // returns true if the string is not empty
-            var fileUpload = $("#imgfile").get(0);
+                var files = fileUpload.files;
 
-            var files = fileUpload.files;
+                var data = new FormData();
 
-            var data = new FormData();
+                data.append(files[0].name, files[0], id + "_" + files[0].name);
 
-            data.append(files[0].name, files[0]);
 
+                $.ajax({
+
+                    type: "POST",
+
+                    url: "/PageHelper/CoppyImage/",
+
+                    contentType: false,
+
+                    processData: false,
+
+                    data: data,
+
+                    async: false,
+
+
+                    success: function (message) {
+
+
+
+                    },
+
+                    error: function () {
+
+                        alert("Error!");
+
+                    },
+
+                    complete: function () {
+
+                        $("#divloader").hide()
+
+                    }
+
+                });
+            }
+        }
+        else {
+          
             $.ajax({
 
-                type: "POST",
+                type: "Get",
 
-                url: "/PageHelper/CoppyImage",
+                url: "/PageHelper/CoppyUnchose/" + id,
 
                 contentType: false,
 
                 processData: false,
 
-                data: data,
+                
+               
 
                 async: false,
 
@@ -146,7 +188,10 @@
                 }
 
             });
+
         }
+       
+
 
 
     }
@@ -155,6 +200,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
 
 
 

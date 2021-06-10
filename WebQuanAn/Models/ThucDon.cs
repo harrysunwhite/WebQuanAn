@@ -38,6 +38,7 @@ namespace WebQuanAn.Models
        
         public  Boolean  TrangThai { get; set; }
         [NotMapped]
+       
         public IFormFile ImageFile { get; set; }
 
         [Display(Name = "Loại thức ăn")]
@@ -64,6 +65,40 @@ namespace WebQuanAn.Models
         public Decimal? Gia { get; set; }
         public int MaLoai { get; set; }
         public bool TrangThai { get; set; }
+    }
+    public class ThucDonUpdateModel
+    {
+        public Int32 uId { get; set; }
+
+        [Display(Name = "Tên món ăn")]
+        [Required(ErrorMessage = "Nhập tên món ăn")]
+        [StringLength(100)]
+        public String uTenMon { get; set; }
+        [Display(Name = "Mô tả")]
+
+        public String Mota { get; set; }
+
+        [Display(Name = "Giá")]
+        [Required(ErrorMessage = "Nhập Giá")]
+
+        public Decimal uGia { get; set; }
+
+        [Display(Name = "Hình ảnh")]
+
+        public String uHinhAnh { get; set; }
+
+        [Display(Name = "Đang phục vụ")]
+
+        public Boolean uTrangThai { get; set; }
+        [NotMapped]
+        public IFormFile uImageFile { get; set; }
+
+        [Display(Name = "Loại thức ăn")]
+        public Int32 uMaLoai { get; set; }
+
+
+
+        public virtual PhanLoai uMaLoaiNavigation { get; set; }
     }
 }
 

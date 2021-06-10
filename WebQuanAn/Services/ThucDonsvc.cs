@@ -60,7 +60,7 @@ namespace WebQuanAn.Services
             
               
         }
-        public int  Edit(ThucDon model )
+        public int  Edit(ThucDonUpdateModel model )
         {
 
 
@@ -68,10 +68,17 @@ namespace WebQuanAn.Services
                
                     try
                     {
+                var thucDon = _context.ThucDon.Find(model.uId);
+                thucDon.TenMon = model.uTenMon;
+                thucDon.Mota = model.Mota;
+                thucDon.Gia = model.uGia;
+                thucDon.HinhAnh = model.uHinhAnh;
+                thucDon.TrangThai = model.uTrangThai;
+                thucDon.MaLoai = model.uMaLoai;
 
-                        _context.Update(model);
+                        _context.Update(thucDon);
                         _context.SaveChanges();
-                        return model.Id;
+                        return model.uId;
                     }
                     catch (DbUpdateConcurrencyException ex)
                     {
@@ -109,6 +116,22 @@ namespace WebQuanAn.Services
             }
             
          
+        }
+        public ThucDonUpdateModel GetUpdate(int id)
+        {
+            return (from td in _context.ThucDon
+                    where td.Id == id
+                    select new ThucDonUpdateModel
+                    {
+                        uId = td.Id,
+                        uTenMon = td.TenMon,
+                        Mota = td.Mota,
+                        uGia = td.Gia,
+                        uHinhAnh = td.HinhAnh,
+                        uTrangThai = td.TrangThai,
+                        uMaLoai = td.MaLoai,
+                        uMaLoaiNavigation = td.MaLoaiNavigation
+                    }).FirstOrDefault();
         }
 
        public IEnumerable<PhanLoai> PhanloaiNav()

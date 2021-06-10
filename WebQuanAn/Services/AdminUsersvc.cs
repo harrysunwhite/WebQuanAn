@@ -74,14 +74,14 @@ namespace WebQuanAn.Services
                    where user.Id == id
                    select new UpdateModel
                    {
-                       Id = user.Id,
-                       Ho = user.Ho,
-                       Ten = user.Ten,
-                       Email = user.Email,
-                       Hinh = user.Hinh,
-                       Role = user.Role,
-                       TrangThai = user.TrangThai,
-                       SDT = user.SDT
+                       uId = user.Id,
+                       uHo = user.Ho,
+                       uTen = user.Ten,
+                       uEmail = user.Email,
+                       uHinh = user.Hinh,
+                       uRole = user.Role,
+                       uTrangThai = user.TrangThai,
+                       uSDT = user.SDT
                    }).FirstOrDefault();
         }    
         public int  Edit(UpdateModel model )
@@ -92,17 +92,17 @@ namespace WebQuanAn.Services
 
             try
             {
-                var adminUser = _context.AdminUser.Find(model.Id);
-                adminUser.Ho = model.Ho;
-                adminUser.Ten = model.Ten;
-                adminUser.Email = model.Email;
-                adminUser.Hinh = model.Hinh;
-                adminUser.SDT = model.SDT;
-                adminUser.Role = model.Role;
-                adminUser.TrangThai = model.TrangThai;
+                var adminUser = _context.AdminUser.Find(model.uId);
+                adminUser.Ho = model.uHo;
+                adminUser.Ten = model.uTen;
+                adminUser.Email = model.uEmail;
+                adminUser.Hinh = model.uHinh;
+                adminUser.SDT = model.uSDT;
+                adminUser.Role = model.uRole;
+                adminUser.TrangThai = model.uTrangThai;
                 _context.Update(adminUser);
                 _context.SaveChanges();
-                return model.Id;
+                return model.uId;
             }
             catch (Exception ex)
             {

@@ -21,7 +21,7 @@ namespace WebQuanAn.Controllers
 
 
         [HttpPost]
-
+       
         public string CoppyImage()
 
         {
@@ -45,8 +45,8 @@ namespace WebQuanAn.Controllers
                                 .Trim('"');
 
 
-                string filePath = hostingEnv.WebRootPath + @"\Images\" + DateTime.Now.ToString("ddmmyyyy_HHm") + "_" + $@"{ filename}";
-             
+                string filePath = hostingEnv.WebRootPath + @"\Images\" + $@"{ filename}";
+                
                 size += file[0].Length;
 
                 using (FileStream fs = System.IO.File.Create(filePath))
@@ -78,5 +78,24 @@ namespace WebQuanAn.Controllers
             return result;
 
         }
+
+        
+        public string CoppyUnchose(int id)
+        {
+            string source = hostingEnv.WebRootPath + @"\Images\unchoseUser.png";
+            string des = hostingEnv.WebRootPath + @"\Images\" + id.ToString() + "_" + "unchoseUser.png";
+            System.IO.File.Copy(source, des, true);
+            return "OK";
+        }
+
+        public string CoppyUnchoseTD(int id)
+        {
+            string source = hostingEnv.WebRootPath + @"\Images\unchose.jpg";
+            string des = hostingEnv.WebRootPath + @"\Images\" + id.ToString() + "_" + "unchose.jpg";
+            System.IO.File.Copy(source, des, true);
+            return "OK";
+        }
+
+
     }
 }

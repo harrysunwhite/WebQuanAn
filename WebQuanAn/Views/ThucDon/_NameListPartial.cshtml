@@ -41,12 +41,13 @@
                 @foreach (var item in ViewBag.Names as IEnumerable<ThucDon>)
                 {
                     var trangthai = item.TrangThai ? "Khả dụng" : "Không khả dụng";
+                    var imgName = item.Id + "_" + item.HinhAnh;
                     <tr>
 
                         <td class="align-middle">@item.TenMon</td>
                         <td class="align-middle">@item.Mota</td>
                         <td class="align-middle">@item.Gia.ToString("n0").Replace(',', '.')</td>
-                        <td> <img src="~/Images/@item.HinhAnh" width="100" height="100" /></td>
+                        <td> <img src="~/Images/@imgName" width="100" height="100" /></td>
                         <td class="align-middle">@trangthai</td>
                         <td class="align-middle">@item.MaLoaiNavigation.TenLoai</td>
 
@@ -57,7 +58,7 @@
                             {
                                 <a class="btn btn-success btn-sm active" onclick="_restore(@item.Id)"> <i class="fa fa-recycle" aria-hidden="true"></i></a>
                             }
-                            <a class="btn btn-dark btn-sm active" onclick="_Detail(@item.Id)"> <i class="fa fa-info" aria-hidden="true" data-toggle="modal" data-target="#ModalDetail"></i></a>
+                           | <a class="btn btn-dark btn-sm active" onclick="_Detail(@item.Id)"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         </td>
                     </tr>
                 }

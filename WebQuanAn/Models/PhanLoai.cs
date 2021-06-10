@@ -14,7 +14,7 @@ namespace WebQuanAn.Models
     [Key]
         public  Int32  Id { get; set; }
         [Display(Name ="Tên loại thực đơn")]
-        [Required(ErrorMessage ="This field is required")]
+        [Required(ErrorMessage ="Nhập tên loại")]
         [StringLength(100)]
         public  String  TenLoai { get; set; }
     }

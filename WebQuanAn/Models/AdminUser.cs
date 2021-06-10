@@ -50,6 +50,7 @@ namespace WebQuanAn.Models
         [Display(Name ="Hình ảnh")]
         public string Hinh { get; set; }
         [NotMapped]
+        
         public IFormFile FileHinh { get; set; }
 
 
@@ -106,43 +107,45 @@ namespace WebQuanAn.Models
     public class UpdateModel
     {
         [Display(Name = "Mã Admin")]
-        public int Id { get; set; }
+        public int uId { get; set; }
 
         [Display(Name = "Họ")]
         [Required(ErrorMessage = "Họ không được để trống")]
         [StringLength(50)]
-        public string Ho { get; set; }
+        public string uHo { get; set; }
 
         [Display(Name = "Tên")]
         [Required(ErrorMessage = "Tên không được để trống")]
         [StringLength(50)]
-        public string Ten { get; set; }
-
+       
+        public string uTen { get; set; }
+        [Display(Name = "Email")]
         [Required(ErrorMessage = "Email không được để trống")]
         [StringLength(100)]
         [DataType(DataType.EmailAddress, ErrorMessage = "E-mail is not valid")]
        
-        public string Email { get; set; }
+        public string uEmail { get; set; }
        
 
         [Display(Name = "Hình ảnh")]
-        public string Hinh { get; set; }
+        public string uHinh { get; set; }
         [NotMapped]
-        public IFormFile FileHinh { get; set; }
+        public IFormFile uFileHinh { get; set; }
 
 
         [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
         [RegularExpression(@"((09|03|07|08|05)+([0-9]{8})\b)", ErrorMessage = "Invail phone number")]
         [StringLength(15)]
-        public string SDT { get; set; }
+        [Display(Name = "SDT")]
+        public string uSDT { get; set; }
 
 
-      
+        [Display(Name = "Quyền")]
         [Range(1, 2, ErrorMessage = "Chọn quyền quản trị")]
-        public Role Role { get; set; }
+        public Role uRole { get; set; }
 
 
         [Display(Name = "Trạng thái")]
-        public bool TrangThai { get; set; }
+        public bool uTrangThai { get; set; }
     }
 }

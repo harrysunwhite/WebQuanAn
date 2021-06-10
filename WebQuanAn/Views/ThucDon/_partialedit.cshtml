@@ -1,6 +1,6 @@
 
 
-@model WebQuanAn.Models.ThucDon
+@model WebQuanAn.Models.ThucDonUpdateModel
 
 <h4>Cập nhật thông tin</h4>
 <hr />
@@ -10,13 +10,13 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group col-12">
 
-            <input asp-for="Id" id="idpb" readonly hidden class="form-control" />
+            <input asp-for="uId" id="idpb" readonly hidden class="form-control" />
 
         </div>
         <div class="form-group col-6">
-            <label asp-for=" TenMon" class="control-label"></label>
-            <input asp-for="TenMon" class="form-control" required />
-            <span asp-validation-for="TenMon" class="text-danger"></span>
+            <label asp-for=" uTenMon" class="control-label"></label>
+            <input asp-for="uTenMon" class="form-control" />
+            <span asp-validation-for="uTenMon" class="text-danger"></span>
         </div>
         <div class="form-group col-6">
             <label asp-for=" Mota" class="control-label"></label>
@@ -24,29 +24,30 @@
             <span asp-validation-for="Mota" class="text-danger"></span>
         </div>
         <div class="form-group col-6">
-            <label asp-for=" Gia" class="control-label"></label>
-            <input asp-for="Gia" class="form-control" required />
-            <span asp-validation-for="Gia" class="text-danger"></span>
+            <label asp-for=" uGia" class="control-label"></label>
+            <input asp-for="uGia" class="form-control" />
+            <span asp-validation-for="uGia" class="text-danger"></span>
         </div>
         <div class="form-group col-6">
-            <label asp-for=" MaLoai" class="control-label"></label>
-            <select asp-for="MaLoai" class="form-control" asp-items="ViewBag.MaLoai"></select>
-            <span asp-validation-for="MaLoai" class="text-danger"></span>
+            <label asp-for=" uMaLoai" class="control-label"></label>
+            <select asp-for="uMaLoai" class="form-control" asp-items="ViewBag.MaLoai"></select>
+            <span asp-validation-for="uMaLoai" class="text-danger"></span>
         </div>
 
         <div class="form-group col-6">
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="TrangThai" /> @Html.DisplayNameFor(model => model.TrangThai)
+                    <input class="form-check-input" asp-for="uTrangThai" /> @Html.DisplayNameFor(model => model.uTrangThai)
                 </label>
             </div>
         </div>
+        @{ var imgName = Model.uId + "_" + Model.uHinhAnh;}
         <div class="form-group col-6">
-            <label for="ImageFile" class="control-label">Hình Ảnh:&nbsp;</label><input asp-for="ImageFile" accept="image/*" id="imgfile" />
+            <label for="ImageFile" class="control-label">Hình Ảnh:&nbsp;</label><input asp-for="uImageFile" accept="image/*" id="imgfile" />
             <br />
-            <img src="~/Images/@Model.HinhAnh" id="imgTD" width="100" height="100" />
+            <img src="~/Images/@imgName" id="imgTD" width="100" height="100" />
 
-            <input asp-for="HinhAnh" hidden id="UrlHinh" />
+            <input asp-for="uHinhAnh" hidden id="UrlHinh" />
         </div>
 
 
@@ -57,7 +58,7 @@
 <div>
 
 </div>
-<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 <script>
     function readURLc(input) {
@@ -82,11 +83,11 @@
 
 
     });
-    function UploadFile() {
+    function UploadFile(id) {
 
         var fileName = $("#imgfile").val();
 
-
+        var ImgName = $('#UrlHinh').text();
         if (fileName) { // returns true if the string is not empty
             var fileUpload = $("#imgfile").get(0);
 
@@ -94,13 +95,14 @@
 
             var data = new FormData();
 
-            data.append(files[0].name, files[0]);
+            data.append(files[0].name, files[0], id + "_" + files[0].name);
+
 
             $.ajax({
 
                 type: "POST",
 
-                url: "/PageHelper/CoppyImage",
+                url: "/PageHelper/CoppyImage/",
 
                 contentType: false,
 
@@ -131,6 +133,7 @@
 
             });
         }
+
 
 
     }

@@ -74,7 +74,7 @@ namespace WebQuanAn
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=PhanLoai}/{action=Index}/{id?}");
+                    pattern: "{controller=Thucdon}/{action=Index}/{id?}");
             });
         }
     }

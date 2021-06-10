@@ -22,8 +22,11 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Hinh)
         </dt>
+        @{
+            var hinh = Model.Id + "_" + Model.Hinh;
+        }
         <dd class="col-sm-10">
-            <img src="images/@Model.Hinh" width="150" height="150" alt="">
+            <img src="images/@hinh" width="150" height="150" alt="">
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.SDT)
@@ -46,3 +49,5 @@
     </dl>
 </div>
 
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>

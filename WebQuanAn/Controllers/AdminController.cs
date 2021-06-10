@@ -46,7 +46,8 @@ namespace WebQuanAn.Controllers
                     HttpContext.Session.SetString(SessionKey.Nguoidung.Role, nguoidung.Role.ToString());
                     HttpContext.Session.SetString(SessionKey.Nguoidung.NguoidungContext,JsonConvert.SerializeObject(nguoidung));
 
-                    return RedirectToAction("index","phanloai");
+                    return RedirectToAction("index","thucdon");
+                   
                 }
             }
             return View(viewLogin);
