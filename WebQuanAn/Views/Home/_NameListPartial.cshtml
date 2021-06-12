@@ -1,0 +1,81 @@
+﻿
+
+
+@model IPagedList<ThucDon>
+
+@using X.PagedList.Mvc.Core;
+
+
+@using X.PagedList;
+@using X.PagedList.Web.Common;
+<div id="list">
+
+    @foreach (var item in Model as IEnumerable<ThucDon>)
+    {
+        
+            var HinhAnh = item.Id + "_" + item.HinhAnh;
+        
+        <div class="item row align-items-center">
+            <div class="col-sm-3 pr-5">
+                <img class="product-img" src="~/Images/@HinhAnh">
+            </div>
+            <div class="details col-sm-9">
+                <div class="item__header">
+                    <h3 class="item__title">@item.TenMon</h3>
+                    <span class="item__dots"></span>
+                    <span class="item__price">@item.Gia.ToString("n0").Replace(',', '.') VNĐ</span>
+                </div>
+                <p class="item__description">
+                   @item.Mota
+                </p>
+                <button class="btn btn-sm btn-outline-primary my-cart-btn"
+                        data-id="@item.Id" data-name="@item.TenMon" data-price="@item.Gia" data-quantity="1"
+                        data-image="/Images/@HinhAnh">
+                    Add to cart
+                </button>
+            </div>
+        </div>
+    }
+
+
+
+
+    <div class="text-right">
+
+        @{
+            var pageRender = new PagedListRenderOptions
+            {
+                MaximumPageNumbersToDisplay = 5,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayPageCountAndCurrentLocation = false,
+                UlElementClasses = new[] { "pagination" },
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" },
+
+
+                ContainerDivClasses = new[] { "pagination-container" }
+
+
+            };
+        }
+        @{
+            var searchModel = ViewBag.Data as ThucDonSearchModel;
+        }
+
+
+        @Html.PagedListPager((IPagedList<ThucDon>)ViewBag.Names, page => Url.Action("PageList", new { page, TenMon = searchModel.TenMon, MaLoai = searchModel.MaLoai }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(pageRender, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "Menu" }))
+    </div>
+
+
+
+
+</div>
+
+
+
+
+
+

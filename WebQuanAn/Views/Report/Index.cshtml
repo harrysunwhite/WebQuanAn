@@ -1,0 +1,310 @@
+
+
+@model WebQuanAn.Models.DonHangSearchModel;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/PagedList.css" />
+<link rel="stylesheet" href="~/css/toastr.css" />
+<script src="~/js/toastr.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+
+<div class="content-wrapper">
+    <div class="m-3 ">
+
+
+        <div class="d-flex m-2">
+
+            <button type="button" class="btn btn-success mr-2 btn-sm" onclick="Clear()" id="btSeach"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Làm mới</button>
+        </div>
+        <div class="d-flex flex-wrap m-2">
+
+            @using (Html.BeginForm(null, null, FormMethod.Get, new { name = "frmSearch", id = "frmSearch", enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <input asp-for="TenKH" id="ThoiGianSearch" placeholder="Tìm theo tên khách" class="mr-2 mb-2 form-control-sm" />
+                <input asp-for="SDT" id="TrangThaiSearch" placeholder="Tìm theo số điện thoại" class="mr-2 mb-2 form-control-sm" />
+                <select asp-for="TrangThai" class="mr-2 mb-2 form-control-sm" asp-items="Html.GetEnumSelectList<TrangThai>()"><option value="">Lọc theo trạng thái</option></select>
+
+
+
+
+
+
+                <button type="button" class="btn btn-success btn-sm mr-2 " onclick="Timkiem()" id="btSeach"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Lọc</button>
+
+
+            }
+
+        </div>
+
+
+
+
+
+    </div>
+    <div id="nameListContainer">
+        <partial name="_NameListPartial" model="ViewBag.Names" />
+    </div>
+
+    <div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:780px">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">CartDetail</h4>
+                </div>
+                <div id="CartDetail">
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+@section scripts{
+    <script src="~/js/toastr.js"></script>
+    <script src="/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+
+        var $id = "";
+        var $modal = $('#myModal');
+        var $myModalContent = $("#myModalContent");
+        var $modalins = $('#myModalins');
+        var $myModalContentins = $("#myModalContentins");
+        var $myModalTitle = $("#myModalTitle");
+        var $myModalTitleins = $("#myModalTitleins");
+        var $modaldetail = $('#modalCart');
+        var $detailContent = $("#CartDetail");
+        $(document).ready(
+
+            function () {
+
+              
+
+              
+
+
+
+            });
+
+
+
+        function reloadpage(page) {
+            obj = {};
+
+            obj.Page = page;
+            $.ajax({
+                url: '/report/PageList/',
+
+                type: "Get",
+                timeout: 20000,
+
+                async: false,
+
+                data: obj,
+
+                success: function (result) {
+
+
+                    $('#nameListContainer').html(result);
+                },
+
+                failure: function (message) {
+                    $('#preloader-wrapper').toggleClass('hide');
+                }
+            });
+        }
+
+        function cartDetail(id_) {
+
+            $detailContent.html("");
+
+            $.ajax({
+                url: '/report/CartDetail/',
+
+                type: "Get",
+                timeout: 20000,
+
+                async: true,
+                data: {
+                    id: id_
+                },
+
+                success: function (result) {
+
+
+                    $detailContent.html(result);
+                    $modaldetail.modal('show');
+
+
+                    $('#preloader-wrapper').toggleClass('hide');
+                },
+                failure: function (message) {
+                    $('#preloader-wrapper').toggleClass('hide');
+                }
+            });
+        }
+
+
+        function update(id_, trangthai) {
+            var stringcf;
+            if (trangthai == 2) stringcf = "Xác nhận đơn hàng?";
+            if (trangthai == 3) stringcf = "Xác nhận giao hàng?";
+            if (trangthai == 4) stringcf = "Xác nhận huỷ đơn hàng?"
+            var cf = confirm(stringcf);
+            if (cf) {
+                $.ajax({
+                    type: "POST",
+                    url: "/report/Update",
+                    data: {
+                        id: id_,
+                        trangThai: trangthai
+                    },
+                    success: function (result) {
+                        $('#preloader-wrapper').toggleClass('hide');
+                        if (result.status >= 1) {
+
+                            toastr.success(result.text);
+                            reloadpage(1);
+                            cartDetail(id_)
+                        }
+                        else {
+                            toastr.warning(result.text);
+                        }
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    },
+                    failure: function (message) {
+                        $('#preloader-wrapper').toggleClass('hide');
+                    }
+                });
+            }
+           
+        }
+
+
+        function Create() {
+
+            $myModalContent.html("");
+            $myModalTitle.html("Tạo mới");
+            $.ajax({
+                url: '/DonHang/Add/',
+
+                type: "Get",
+                timeout: 20000,
+
+                async: true,
+
+
+                success: function (result) {
+                    $myModalContent.html(result);
+                    $('#btSave').show();
+                    $('#btupdate').hide();
+                    $modal.modal('show');
+
+
+                    $('#preloader-wrapper').toggleClass('hide');
+                },
+                failure: function (message) {
+                    $('#preloader-wrapper').toggleClass('hide');
+                }
+            });
+
+        }
+
+
+
+        function _delete(id) {
+            var cf = confirm('Bạn muốn xoá bản ghi này?');
+            if (cf) {
+                $.ajax({
+                    type: "POST",
+                    url: "/DonHang/Delete",
+                    data: { "id": id },
+                    success: function (result) {
+                        $('#preloader-wrapper').toggleClass('hide');
+                        if (result.status >= 1) {
+                            toastr.success(result.text);
+
+                            reloadpage();
+                        }
+                        else {
+                            toastr.warning(result.text);
+                        }
+                    },
+                    error: function (errormessage) {
+                        toastr.warning(errormessage.responseText);
+                    },
+                    failure: function (message) {
+                        $('#preloader-wrapper').toggleClass('hide');
+                    }
+                });
+            }
+
+        }
+
+        function Timkiem() {
+
+
+            $.ajax({
+                url: '/report/PageList/',
+
+                type: "Get",
+                timeout: 20000,
+                async: false,
+                data: $("#frmSearch").serialize(),
+
+
+                success: function (result) {
+
+
+                    if (result.status == -2) {
+                        toastr.success(result.text);
+
+                    }
+                    else {
+
+                        $('#nameListContainer').html(result);
+                    }
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                },
+
+
+                failure: function (message) {
+                    $('#preloader-wrapper').toggleClass('hide');
+                }
+            });
+        }
+
+        function Clear() {
+
+
+            reloadpage(1);
+        }
+
+
+    </script>
+}
+
+
+
+

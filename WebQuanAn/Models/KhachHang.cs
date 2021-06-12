@@ -15,8 +15,7 @@ namespace WebQuanAn.Models
     {
       
         public int Id { get; set; }
-        public string Ho { get; set; }
-        public string Ten { get; set; }
+        public string Name { get; set; }
         public Gender GioiTinh { get; set; }
         public DateTime NgaySinh { get; set; }
         public string Sdt { get; set; }

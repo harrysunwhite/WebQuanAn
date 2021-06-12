@@ -106,7 +106,7 @@ namespace WebQuanAn.Models
 
                 entity.Property(e => e.ThoiGian).HasColumnType("datetime");
 
-                entity.Property(e => e.TongTien).HasColumnType("money");
+                entity.Property(e => e.DiaChi).IsUnicode(true).IsRequired();
 
                 entity.HasOne(d => d.MaKhNavigation)
                     .WithMany(p => p.DonHangs)
@@ -128,9 +128,6 @@ namespace WebQuanAn.Models
 
                 entity.Property(e => e.FacebookLink).HasMaxLength(250);
 
-                entity.Property(e => e.Ho)
-                    .IsRequired()
-                    .HasMaxLength(50);
 
                 entity.Property(e => e.MatKhau).IsUnicode(false);
 
@@ -142,7 +139,7 @@ namespace WebQuanAn.Models
                     .IsUnicode(false);
                     
 
-                entity.Property(e => e.Ten)
+                entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50);
                 entity.Property(e => e.GioiTinh).IsRequired();

@@ -17,7 +17,7 @@ namespace WebQuanAn.Migrations
                     Ten = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     MatKhau = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    Hinh = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: true),
+                    Hinh = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     SDT = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: false),
                     Role = table.Column<int>(type: "int", nullable: false),
                     TrangThai = table.Column<bool>(type: "bit", nullable: false)
@@ -33,8 +33,8 @@ namespace WebQuanAn.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Ho = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Ten = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    GioiTinh = table.Column<int>(type: "int", nullable: false),
                     NgaySinh = table.Column<DateTime>(type: "date", nullable: false),
                     Sdt = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: false),
                     Email = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
@@ -68,8 +68,8 @@ namespace WebQuanAn.Migrations
                     ThoiGian = table.Column<DateTime>(type: "datetime", nullable: false),
                     TrangThai = table.Column<byte>(type: "tinyint", nullable: false),
                     MaKH = table.Column<int>(type: "int", nullable: false),
-                    GhiChu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    TongTien = table.Column<decimal>(type: "money", nullable: false)
+                    DiaChi = table.Column<int>(type: "int", nullable: false),
+                    GhiChu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {

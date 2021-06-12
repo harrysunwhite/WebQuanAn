@@ -1,0 +1,103 @@
+
+
+
+@model IPagedList<KhachHang>
+@*import this so we get our HTML Helper*@
+@using X.PagedList.Mvc.Core;
+
+
+@using X.PagedList;
+@using X.PagedList.Web.Common
+<div id="list">
+
+    <div style="min-height:400px">
+        <table class="table table table-striped table-bordered text-left w-100 " style="font-size:small">
+            <thead class="bg-success">
+                <tr>
+
+                 
+
+                    <th>
+                       Họ Tên
+                    </th>
+
+                    <th>
+                        Ngày sinh
+                    </th>
+
+                    <th>
+                        Số điện thoại
+                    </th>
+
+                    <th>
+                        Email
+                    </th>
+
+                    <th>
+                        Giới tính
+                    </th>
+
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+                @foreach (var item in ViewBag.Names as IEnumerable<KhachHang>)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.NgaySinh</td>
+                        <td>@item.Sdt</td>
+                        <td>@item.Email</td>
+                        <td>@Html.DisplayFor(Model=>item.GioiTinh)</td>
+
+
+
+
+                        <td> <a class="btn btn-dark btn-sm active" onclick="_Detail(@item.Id)"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="text-right">
+
+        @{
+            var pageRender = new PagedListRenderOptions
+            {
+                MaximumPageNumbersToDisplay = 5,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayPageCountAndCurrentLocation = false,
+                UlElementClasses = new[] { "pagination" },
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" },
+
+
+                ContainerDivClasses = new[] { "pagination-container" }
+
+
+            };
+        }
+        @{
+            var searchModel = ViewBag.Data as KhachHangSearchModel;
+        }
+
+
+        @Html.PagedListPager((IPagedList<KhachHang>)ViewBag.Names, page => Url.Action("PageList", new { page, Name = searchModel.Name, Sdt = searchModel.Sdt, Email = searchModel.Email }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(pageRender, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
+    </div>
+
+
+
+
+</div>
+
+
+
+
+
+

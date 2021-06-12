@@ -10,7 +10,7 @@ using WebQuanAn.Models;
 namespace WebQuanAn.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210605124924_update2")]
+    [Migration("20210611052823_update2")]
     partial class update2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,6 +99,11 @@ namespace WebQuanAn.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("DiaChi")
+                        .IsRequired()
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("GhiChu")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -109,9 +114,6 @@ namespace WebQuanAn.Migrations
 
                     b.Property<DateTime>("ThoiGian")
                         .HasColumnType("datetime");
-
-                    b.Property<decimal>("TongTien")
-                        .HasColumnType("money");
 
                     b.Property<byte>("TrangThai")
                         .HasColumnType("tinyint");
@@ -143,14 +145,14 @@ namespace WebQuanAn.Migrations
                     b.Property<int>("GioiTinh")
                         .HasColumnType("int");
 
-                    b.Property<string>("Ho")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("MatKhau")
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("NgaySinh")
                         .HasColumnType("date");
@@ -160,11 +162,6 @@ namespace WebQuanAn.Migrations
                         .HasMaxLength(15)
                         .IsUnicode(false)
                         .HasColumnType("varchar(15)");
-
-                    b.Property<string>("Ten")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 

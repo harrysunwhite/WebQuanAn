@@ -45,6 +45,9 @@ namespace WebQuanAn
             services.AddTransient<IThucDon, ThucDonsvc>();
             services.AddTransient<IAdminUser, AdminUsersvc>();
             services.AddTransient<IASMHelper, ASMHelper>();
+            services.AddTransient<IKhachHang, KhachHangsvc>();
+            services.AddTransient<IReport, Reportsvc>();
+            services.AddTransient<IHome, Homesvc>();
             
             services.AddControllersWithViews();
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
@@ -74,7 +77,7 @@ namespace WebQuanAn
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Thucdon}/{action=Index}/{id?}");
+                    pattern: "{controller=home}/{action=Index}/{id?}");
             });
         }
     }

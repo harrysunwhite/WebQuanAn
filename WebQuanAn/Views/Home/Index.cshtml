@@ -1,8 +1,138 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model WebQuanAn.Models.ThucDonSearchModel;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/HomeLayout.cshtml";
 }
+<link rel="stylesheet" href="~/css/PagedList.css" />
+<link rel="stylesheet" href="~/css/toastr.css" />
+<script src="~/js/toastr.js"></script>
+<div class="container">
+    <section id="menu">
+        <div class="block menu1">
+            <div class="row col-12">
+                <div class="d-flex flex-wrap justify-content-end m-2 col-8 ml-auto">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+                    @using (Html.BeginForm(null, null, FormMethod.Get, new { name = "frmSearch", id = "frmSearch", enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+
+                        <input asp-for="TenMon" id="TenMonSearch" placeholder="Tìm theo tên món" class="mr-2 mb-2 form-control-sm" />
+
+
+
+                        <select class="form-control-sm mr-2" id="GiaSearch">
+                            <option value="0">Chọn mức giá</option>
+                            <option value="1">Dưới 100</option>
+                            <option value="2">100 - 300 </option>
+                            <option value="3">Trên 300</option>
+
+                        </select>
+
+
+
+
+                        <button type="button" class="btn btn-success btn-sm mr-2 " onclick="Timkiem()" id="btSeach"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Lọc</button>
+
+                    }
+
+                </div>
+            </div>
+            <div class="buttons-container">
+                <a href="#" onclick="phanloai(0)" class="button button--is-active" data-target="Menu">Tất cả</a>
+                @foreach (var item in ViewBag.PhanLoai as IEnumerable<PhanLoai>)
+                {
+                    <a href="#" onclick="phanloai(@item.Id)" class="button" data-target="Menu">@item.TenLoai</a>
+                }
+            </div>
+            <!-- Start Pizza Menu -->
+            <div class="menu menu--is-visible" id="Menu" data-aos="fade-up">
+                <partial name="_NameListPartial" model="ViewBag.Names" />
+
+            </div>
+
+
+        </div>
+
+        <!-- End block -->
+      
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    </section>
 </div>
+<script>
+    $maloai = 0
+    function phanloai(id) {
+
+        obj = {};
+        obj.MaLoai = id
+        obj.Page = 1;
+        $maloai = id;
+        $.ajax({
+            url: '/Home/PageList/',
+
+            type: "Get",
+            timeout: 20000,
+
+            async: false,
+
+            data: obj,
+
+            success: function (result) {
+
+
+                $('#Menu').html(result);
+            },
+
+            failure: function (message) {
+                $('#preloader-wrapper').toggleClass('hide');
+            }
+        });
+
+    }
+
+    function Timkiem() {
+
+        obj = {};
+        obj.Page = 1
+        obj.TenMon = $('#TenMonSearch').val();
+        obj.Gia = $('#GiaSearch').val();
+        obj.MaLoai = $maloai;
+     
+
+        $.ajax({
+            url: '/Home/PageList/',
+
+            type: "Get",
+            timeout: 20000,
+            async: false,
+            data: obj,
+
+
+            success: function (result) {
+
+
+                if (result.status == -2) {
+                    toastr.success(result.text);
+
+                }
+                else {
+
+                    $('#Menu').html(result);
+                }
+
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            },
+
+
+            failure: function (message) {
+                $('#preloader-wrapper').toggleClass('hide');
+            }
+        });
+    }
+</script>
+

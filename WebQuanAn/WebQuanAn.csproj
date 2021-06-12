@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Views\Home\Index.cshtml" />
-    <None Include="Views\Home\Privacy.cshtml" />
+    <Content Remove="Views\Home\aaa.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Home\aaa.cshtml" />
     <None Include="Views\PhanLoai\Index.cshtml" />
     <None Include="Views\PhanLoai\_NameListPartial.cshtml" />
     <None Include="Views\PhanLoai\_partialAdd.cshtml" />
@@ -60,6 +63,21 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Report\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Report\_NameListPartial.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Index\" />
   </ItemGroup>
 
 </Project>
