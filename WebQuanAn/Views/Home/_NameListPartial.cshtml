@@ -2,9 +2,11 @@
 
 
 @model IPagedList<ThucDon>
-
+@using Microsoft.AspNetCore.Identity
+@using WebQuanAn.Areas.Identity.Data
 @using X.PagedList.Mvc.Core;
-
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 
 @using X.PagedList;
 @using X.PagedList.Web.Common;
@@ -12,9 +14,9 @@
 
     @foreach (var item in Model as IEnumerable<ThucDon>)
     {
-        
-            var HinhAnh = item.Id + "_" + item.HinhAnh;
-        
+
+        var HinhAnh = item.Id + "_" + item.HinhAnh;
+
         <div class="item row align-items-center">
             <div class="col-sm-3 pr-5">
                 <img class="product-img" src="~/Images/@HinhAnh">
@@ -26,13 +28,24 @@
                     <span class="item__price">@item.Gia.ToString("n0").Replace(',', '.') VNĐ</span>
                 </div>
                 <p class="item__description">
-                   @item.Mota
+                    @item.Mota
                 </p>
-                <button class="btn btn-sm btn-outline-primary my-cart-btn"
-                        data-id="@item.Id" data-name="@item.TenMon" data-price="@item.Gia" data-quantity="1"
-                        data-image="/Images/@HinhAnh">
-                    Add to cart
-                </button>
+                @if (!SignInManager.IsSignedIn(User))
+                {
+
+                    <button class="btn btn-sm btn-outline-primary my-cart-btn" onclick="ShowLogIn()">
+                        Đặt hàng
+                    </button>
+                }
+                else
+                {
+                    <button class="btn btn-sm btn-outline-primary my-cart-btn" onclick="addcart(@item.Id)"
+                            data-id="@item.Id" data-name="@item.TenMon" data-price="@item.Gia" data-quantity="1"
+                            data-image="/Images/@HinhAnh">
+                        Đặt hàng
+                    </button>
+                }
+
             </div>
         </div>
     }

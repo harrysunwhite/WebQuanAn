@@ -57,7 +57,12 @@ namespace WebQuanAn.Controllers
 
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
+            HttpContext.Session.Remove(SessionKey.Nguoidung.UserName);
+            HttpContext.Session.Remove(SessionKey.Nguoidung.FullName);
+            HttpContext.Session.Remove(SessionKey.Nguoidung.Pass);
+            HttpContext.Session.Remove(SessionKey.Nguoidung.Role);
+            HttpContext.Session.Remove(SessionKey.Nguoidung.NguoidungContext);
+
             return RedirectToAction("login", "admin");
         }
 

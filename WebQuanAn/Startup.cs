@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Http;
 using WebQuanAn.Services;
 using WebQuanAn.Interfaces;
 using WebQuanAn.Helper;
-
+using WebQuanAn.Areas.Identity.Data;
 
 namespace WebQuanAn
 {
@@ -37,10 +37,17 @@ namespace WebQuanAn
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDistributedMemoryCache();           // Đăng ký dịch vụ lưu cache trong bộ nhớ (Session sẽ sử dụng nó)
             services.AddSession(option => { option.IdleTimeout = TimeSpan.FromMinutes(30); });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = ".AspNetCore.Identity.Application";
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                options.SlidingExpiration = true;
+            });
 
             services.AddDbContextPool<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DataContextConnection")));
-
-            
+            services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false).AddErrorDescriber<CustomErrorDescriber>()
+                    .AddEntityFrameworkStores<DataContext>();
+            services.AddRazorPages();
             services.AddTransient<IPhanLoai,PhanLoaisvc>();
             services.AddTransient<IThucDon, ThucDonsvc>();
             services.AddTransient<IAdminUser, AdminUsersvc>();
@@ -68,7 +75,7 @@ namespace WebQuanAn
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
             app.UseSession();
             app.UseAuthorization();
@@ -78,6 +85,7 @@ namespace WebQuanAn
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

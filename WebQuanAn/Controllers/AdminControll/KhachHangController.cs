@@ -58,7 +58,7 @@ namespace WebQuanAn.Controllers
           
         }
 
-        public ActionResult Detail(int id)
+        public ActionResult Detail(string id)
         {
 
             if (_service.Get(id) == null)

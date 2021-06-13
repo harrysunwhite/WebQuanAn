@@ -16,6 +16,11 @@ namespace WebQuanAn.Constants
             public const string Role = "Role";
             public const string NguoidungContext = "NguoidungContext";
         }
+
+        public static class Cart
+        {
+            public const string CartItem = "CartItem";
+        }
        
     }
 }

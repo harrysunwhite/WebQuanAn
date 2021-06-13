@@ -7,7 +7,7 @@ namespace WebQuanAn.Models
 {
     public partial class CTHD
     {
-        public int MaDh { get; set; }
+        public string MaDh { get; set; }
         public int MaTd { get; set; }
         public int SoLuong { get; set; }
 

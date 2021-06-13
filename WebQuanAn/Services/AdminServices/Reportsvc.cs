@@ -20,7 +20,7 @@ namespace WebQuanAn.Services
 
         }
 
-        public DonHang Get(int id)
+        public DonHang Get(string id)
         {
 
             var item = _context.DonHang.Find(id);
@@ -31,9 +31,9 @@ namespace WebQuanAn.Services
             }
             return item;
         }
-        public List<CTHD> GetCTHDs(int id)
+        public List<CTHD> GetCTHDs(string id)
         {
-            var Listitem = _context.CTHD.Where(d=>d.MaDh == id).Include(i=>i.MaTdNavigation).Include(i=>i.MaDhNavigation).ToList();
+            var Listitem = _context.CTHD.Where(d=>d.MaDh ==id).Include(i=>i.MaTdNavigation).Include(i=>i.MaDhNavigation).ToList();
 
             if (Listitem == null)
             {

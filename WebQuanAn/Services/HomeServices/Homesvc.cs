@@ -36,6 +36,32 @@ namespace WebQuanAn.Services
         {
             return _context.PhanLoai.ToList();
         }
+
+
+        public DonHang Add(DonHang donHang,List<CartItemModel> cartItems)
+        {
+            try
+            {
+                _context.Add(donHang);
+                _context.SaveChangesAsync();
+                foreach (var item in cartItems)
+                {
+                    var TempData = new CTHD();
+                    TempData.MaDh = donHang.MaDH;
+                    TempData.MaTd = item.ThucDon.Id;
+                    TempData.SoLuong = item.Quantity;
+                    _context.Add(TempData);
+                    _context.SaveChangesAsync();
+                }
+                return donHang;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+
+            }
+        }
         public IPagedList<ThucDon> SearchByCondition(ThucDonSearchModel model)
         {
 

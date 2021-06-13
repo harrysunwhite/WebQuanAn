@@ -3,6 +3,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/HomeLayout.cshtml";
 }
+
 <link rel="stylesheet" href="~/css/PagedList.css" />
 <link rel="stylesheet" href="~/css/toastr.css" />
 <script src="~/js/toastr.js"></script>
@@ -54,11 +55,14 @@
 
         </div>
 
+
         <!-- End block -->
-      
+
+        <script src="~/js/toastr.js"></script>
         <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     </section>
 </div>
 <script>
@@ -99,7 +103,7 @@
         obj.TenMon = $('#TenMonSearch').val();
         obj.Gia = $('#GiaSearch').val();
         obj.MaLoai = $maloai;
-     
+
 
         $.ajax({
             url: '/Home/PageList/',
@@ -133,6 +137,27 @@
                 $('#preloader-wrapper').toggleClass('hide');
             }
         });
+    }
+
+
+    function ShowLogIn() {
+        Swal.fire({
+            title: 'Vui lòng đăng nhập để đặt món ăn',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đăng nhập',
+            cancelButtonText: 'Huỷ'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "Identity/Account/Login"
+            }
+
+
+
+        })
     }
 </script>
 

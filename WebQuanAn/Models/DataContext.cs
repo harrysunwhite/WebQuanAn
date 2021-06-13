@@ -5,28 +5,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-
-
+using WebQuanAn.Areas.Identity.Data;
 
 namespace WebQuanAn.Models
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<AppUser>
     {
-      
+
 
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
         }
 
+
         public DbSet<PhanLoai> PhanLoai { get; set; }
         public DbSet<ThucDon> ThucDon { get; set; }
         public DbSet<AdminUser> AdminUser { get; set; }
         public DbSet<CTHD> CTHD { get; set; }
         public DbSet<DonHang> DonHang { get; set; }
-        public DbSet<KhachHang> KhachHang { get; set; }
+        public DbSet<AppUser> KhachHang { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -36,6 +37,7 @@ namespace WebQuanAn.Models
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<AdminUser>(entity =>
             {
                 entity.ToTable("AdminUser");
@@ -70,7 +72,7 @@ namespace WebQuanAn.Models
             modelBuilder.Entity<CTHD>(entity =>
             {
                 entity.HasKey(e => new { e.MaDh, e.MaTd });
-                    
+
 
                 entity.ToTable("CTDH");
 
@@ -87,18 +89,18 @@ namespace WebQuanAn.Models
                     .WithMany(p => p.CTHDs)
                     .HasForeignKey(d => d.MaTd)
                     .OnDelete(DeleteBehavior.ClientSetNull);
-                    
+
             });
 
             modelBuilder.Entity<DonHang>(entity =>
             {
                 entity.HasKey(e => e.MaDH);
-                   
+
 
                 entity.ToTable("DonHang");
 
-               
-                    
+
+
 
                 entity.Property(e => e.GhiChu).HasMaxLength(100);
 
@@ -112,14 +114,14 @@ namespace WebQuanAn.Models
                     .WithMany(p => p.DonHangs)
                     .HasForeignKey(d => d.MaKH)
                     .OnDelete(DeleteBehavior.ClientSetNull);
-                    
+
             });
 
-            modelBuilder.Entity<KhachHang>(entity =>
+            modelBuilder.Entity<AppUser>(entity =>
             {
                 entity.ToTable("KhachHang");
 
-               
+
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -129,7 +131,7 @@ namespace WebQuanAn.Models
                 entity.Property(e => e.FacebookLink).HasMaxLength(250);
 
 
-                entity.Property(e => e.MatKhau).IsUnicode(false);
+
 
                 entity.Property(e => e.NgaySinh).HasColumnType("date");
 
@@ -137,7 +139,7 @@ namespace WebQuanAn.Models
                     .IsRequired()
                     .HasMaxLength(15)
                     .IsUnicode(false);
-                    
+
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -170,13 +172,16 @@ namespace WebQuanAn.Models
                     .WithMany(p => p.ThucDons)
                     .HasForeignKey(d => d.MaLoai)
                     .OnDelete(DeleteBehavior.ClientSetNull);
-                    
+
             });
 
-            
+
         }
 
-     
+       
+
+
+
 
 
     }

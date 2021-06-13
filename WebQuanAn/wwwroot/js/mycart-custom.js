@@ -54,7 +54,7 @@ window.addEventListener('resize', initialHightlightLocation);
 buttons.forEach(button => button.addEventListener('click', handleClick));
 
 
-//mycart
+
 $(function () {
 
   var goToCartIcon = function($addTocartBtn){

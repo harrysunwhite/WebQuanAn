@@ -2,6 +2,11 @@
 @{
     Layout = null;
 }
+@using Microsoft.AspNetCore.Identity
+@using WebQuanAn.Areas.Identity.Data
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +23,7 @@
     <script src="~/js/jquery.min.js"></script>
     <link rel="stylesheet" href="~/css/PagedList.css" />
     <link rel="icon" href="~/img/icon.png" />
-    <title>Food Delivery Landing Page</title>
+    <title>TDPIZZA SITE</title>
 </head>
 <nav class="navbar navbar-expand-md navbar-light fixed-top bg-white">
     <a class="navbar-brand" href="./index.html"><img src="~/img/logo.png"></a>
@@ -29,26 +34,47 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="./index.html">Welcome<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="./index.html">Trang chủ<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="./index.html#menu">Today's Menu</a>
+                <a class="nav-link" href="./index.html#menu">Thực đơn hôm nay</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="./login.html">Split Page</a>
+                <a class="nav-link" href="./login.html">Khuyến mãi</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="./article.html">Article</a>
+                <a class="nav-link" href="./article.html">Giới thiệu</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-            <div class="nav-item my-cart-icon">
+            <li class="nav-item my-cart-icon" onclick="CartTemp()" data-toggle="modal" data-target="#myModal">
                 <img src="~/img/cart.svg" style="width:20px;"> <span class="badge badge-notify my-cart-badge"> </span>
-            </div>
-            <a href="https://github.com/wowthemesnet/template-fooddelivery-bootstrap-html/archive/master.zip"
-               class="btn btn-outline-dark">Download Template</a>
+            </li>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                var curUser = await UserManager.GetUserAsync(User);
+                
+                <li class="nav-item">
+                    <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Chào @curUser.Name!</a>
+                </li>
+                <li class="nav-item">
+                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Đăng xuất</button>
+                    </form>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Đăng ký</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark"  id="login" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
+                </li>
+            }
+
         </ul>
-        
+
     </div>
 </nav>
 
@@ -57,12 +83,12 @@
         <div class="container-fluid text-center">
             <h1 class="display-2 text-white" data-aos="fade-up" data-aos-duration="1000"
                 data-aos-offset="0">
-                Bistrot Français
+                PIZZA HOUSE OF TD
             </h1>
             <p class="lead text-white" data-aos="fade-up" data-aos-duration="1000"
-               data-aos-delay="600">We are closed for the moment, but we will still deliver food at your place!</p>
+               data-aos-delay="600">Hãy chọn thực đơn ưa thích của ban!</p>
             <a href="#menu" class="btn-text lead d-inline-block text-white border-top border-bottom mt-4 pt-1 pb-1"
-               data-aos="fade-up" data-aos-duration="1000" data-aos-delay="1200">View Today's Menu</a>
+               data-aos="fade-up" data-aos-duration="1000" data-aos-delay="1200">Xem thực đơn hôm nay</a>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -72,13 +98,44 @@
 
     <footer class="block footer1 footer text-center">
         <p>
-            &copy; <a href="https://bootstrapstarter.com/bootstrap-templates/template-fooddelivery-bootstrap-html/">"Food Delivery HTML Template"</a> by
-            WowThemes.net
+            &copy; <a href="https://bootstrapstarter.com/bootstrap-templates/template-fooddelivery-bootstrap-html/">THANH DUY</a> FPT - WARNING
         </p>
     </footer>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">GIỎ HÀNG</h4>
+                </div>
+                <div class="modal-body">
+
+                    <p class="alert alert-danger">Giỏ hàng trống</p>
+
+
+
+
+                </div>
+                <div class="modal-footer">
+
+                    <a class="btn btn-success">Hoàn tất</a>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    @RenderSection("scripts", false)
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/mycart.js"></script>
+    <script src="~/js/mycartanimated.js"></script>
     <script src="~/js/mycart-custom.js"></script>
+
+
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>

@@ -9,8 +9,8 @@ namespace WebQuanAn.Interfaces
 {
     public interface IReport
     {
-        DonHang Get(Int32 id);
-        List<CTHD> GetCTHDs(int id);
+        DonHang Get(string id);
+        List<CTHD> GetCTHDs(string id);
         DonHang Edit(DonHang model);
         IPagedList<DonHang> SearchByCondition(DonHangSearchModel model);
     }

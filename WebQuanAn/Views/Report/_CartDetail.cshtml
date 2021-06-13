@@ -50,13 +50,13 @@
     <div class="text-right">
         @if (trangthai == TrangThai._1)
         {
-    <button type="button"  class="btn btn-sm btn-success" onclick="update(@id,2)" >&nbsp;Xác nhận</button>
+    <button type="button"  class="btn btn-sm btn-success" onclick="update('@id',2)" >&nbsp;Xác nhận</button>
            <button type="button"  class="btn btn-sm btn-info btn-warning" disabled><i class="fa fa-save"></i>&nbsp;Hoàn tất</button>
-           <button type="button" class="btn btn-danger btn-sm" onclick="update(@id,4)"><i class="fa fa-close"></i>&nbsp;Huỷ đơn</button>}
+           <button type="button" class="btn btn-danger btn-sm" onclick="update('@id',4)"><i class="fa fa-close"></i>&nbsp;Huỷ đơn</button>}
         @if (trangthai == TrangThai._2)
         {
     <button type="button"  class="btn btn-sm btn-success " disabled>&nbsp;Xác nhận</button>
-                    <button type="button"  class="btn btn-sm btn-warning" onclick="update(@id,3)"><i class="fa fa-save"></i>&nbsp;Hoàn tất</button>
+                    <button type="button"  class="btn btn-sm btn-warning" onclick="update('@id',3)"><i class="fa fa-save"></i>&nbsp;Hoàn tất</button>
                                     <button type="button" class="btn btn-danger btn-sm" id="btclose" disabled><i class="fa fa-close"></i>&nbsp;Huỷ đơn</button>}
         @if (trangthai == TrangThai._3||trangthai == TrangThai._4)
         {

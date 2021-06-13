@@ -1,10 +1,10 @@
 
 
 
-@model IPagedList<KhachHang>
+@model IPagedList<WebQuanAn.Areas.Identity.Data.AppUser>
 @*import this so we get our HTML Helper*@
 @using X.PagedList.Mvc.Core;
-
+@using WebQuanAn.Areas.Identity.Data;
 
 @using X.PagedList;
 @using X.PagedList.Web.Common
@@ -41,7 +41,7 @@
                 </tr>
             </thead>
             <tbody class="tbody">
-                @foreach (var item in ViewBag.Names as IEnumerable<KhachHang>)
+                @foreach (var item in ViewBag.Names as IEnumerable<AppUser>)
                 {
                     <tr>
                         <td>@item.Name</td>
@@ -53,7 +53,7 @@
 
 
 
-                        <td> <a class="btn btn-dark btn-sm active" onclick="_Detail(@item.Id)"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
+                        <td> <a class="btn btn-dark btn-sm active" onclick="_Detail('@item.Id')"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
 
                     </tr>
                 }
@@ -88,7 +88,7 @@
         }
 
 
-        @Html.PagedListPager((IPagedList<KhachHang>)ViewBag.Names, page => Url.Action("PageList", new { page, Name = searchModel.Name, Sdt = searchModel.Sdt, Email = searchModel.Email }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(pageRender, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
+        @Html.PagedListPager((IPagedList<AppUser>)ViewBag.Names, page => Url.Action("PageList", new { page, Name = searchModel.Name, Sdt = searchModel.Sdt, Email = searchModel.Email }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(pageRender, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
     </div>
 
 

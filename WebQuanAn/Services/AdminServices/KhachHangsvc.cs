@@ -10,6 +10,7 @@ using WebQuanAn.Models;
 using WebQuanAn.Interfaces;
 using X.PagedList;
 using Microsoft.EntityFrameworkCore;
+using WebQuanAn.Areas.Identity.Data;
 
 namespace WebQuanAn.Services
 {
@@ -27,27 +28,9 @@ namespace WebQuanAn.Services
 
         
         
-        public KhachHang Add(KhachHang model)
-        {
-            try
-            {
+      
 
-                
-                    _context.Add(model);
-                    _context.SaveChanges();
-                    return model;
-              
-
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex);
-                return null;
-                
-            }     
-        }
-
-        public KhachHang Get(Int32 id)
+        public AppUser Get(string id)
         {
             
                 var item = _context.KhachHang.Find(id);
@@ -60,61 +43,12 @@ namespace WebQuanAn.Services
             
               
         }
-        public KhachHang  Edit(KhachHang model )
-        {
            
-               
-
-               
-                    try
-                    {
-                        _context.Update(model);
-                        _context.SaveChanges();
-                        return model;
-                    }
-                    catch (DbUpdateConcurrencyException ex)
-                    {
-                        Console.WriteLine(ex);
-                        return null;
-                    }
-                    
-              
-                
-
-          
-            
-           
-        }
-
-       public bool Delete(Int32 Id)
-        {
-            try
-            {
-                
-                    var find = _context.KhachHang.Find(Id);
-                   
-
-                    _context.KhachHang.Remove(find);
-                    _context.SaveChanges();
-
-                    return true;
-
-                
-            }   
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex);
-                return false;
-            }
-            
-         
-        }
-                
        
-        public IPagedList<KhachHang> SearchByCondition(KhachHangSearchModel model)
+        public IPagedList<AppUser> SearchByCondition(KhachHangSearchModel model)
         {
 
-                IEnumerable<KhachHang> listUnpaged;
+                IEnumerable<AppUser> listUnpaged;
                 listUnpaged = _context.KhachHang  ;
                
                 
@@ -161,9 +95,9 @@ namespace WebQuanAn.Services
 
 
 
-        protected IEnumerable<KhachHang> GetAllFromDatabase()
+        protected IEnumerable<AppUser> GetAllFromDatabase()
         {
-            List<KhachHang> data = new List<KhachHang>();
+            List<AppUser> data = new List<AppUser>();
             
                 data = _context.KhachHang.ToList();
                 

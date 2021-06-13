@@ -9,7 +9,7 @@ using WebQuanAn.Models;
 
 namespace WebQuanAn.Controllers
 {
-    public class ReportController : Controller
+    public class ReportController : BaseController
     {
         private IReport _service;
         public ReportController(IReport service)
@@ -52,7 +52,7 @@ namespace WebQuanAn.Controllers
 
         }
 
-        public IActionResult CartDetail(int id)
+        public IActionResult CartDetail(string id)
         {
 
                var listTD = _service.GetCTHDs(id);
@@ -63,7 +63,7 @@ namespace WebQuanAn.Controllers
 
         }
         [HttpPost]
-        public IActionResult Update(int id,int trangThai)
+        public IActionResult Update(string id,int trangThai)
         {
             var donHang = _service.Get(id);
             donHang.TrangThai = (TrangThai)trangThai;

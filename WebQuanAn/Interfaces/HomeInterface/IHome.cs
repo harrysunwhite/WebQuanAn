@@ -12,5 +12,6 @@ namespace WebQuanAn.Interfaces
         ThucDon Get(int id); 
         IEnumerable<PhanLoai> PhanloaiNav();
         IPagedList<ThucDon> SearchByCondition(ThucDonSearchModel model);
+        public DonHang Add(DonHang donHang, List<CartItemModel> cartItems);
     }
 }

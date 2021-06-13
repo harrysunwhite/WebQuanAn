@@ -99,14 +99,13 @@
             margin-bottom: 0;
         }
 
+    
     .job-box .img-holder {
         height: 65px;
         width: 65px;
-        background-color: #4e63d7;
-        background-image: -webkit-gradient(linear, left top, right top, from(rgba(78, 99, 215, 0.9)), to(#5a85dd));
-        background-image: linear-gradient(to right, rgba(78, 99, 215, 0.9) 0%, #5a85dd 100%);
-        font-family: "Open Sans", sans-serif;
-        color: #fff;
+       
+       
+        
         font-size: 22px;
         font-weight: 700;
         display: -webkit-box;
@@ -120,7 +119,6 @@
         align-items: center;
         border-radius: 65px;
     }
-
     .career-title {
         background-color: #4e63d7;
         color: #fff;
@@ -197,12 +195,35 @@
         
                 @foreach (var item in ViewBag.Names as IEnumerable<DonHang>)
                 {
+
                     
                     <div class="job-box d-md-flex align-items-center justify-content-between mb-30 shadow p-3 mb-5 bg-white rounded">
                         <div class="job-left my-4 d-md-flex align-items-center flex-wrap">
-                            <div class="img-holder mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex">
-                                @item.MaDH
-                            </div>
+                            @if (item.TrangThai == TrangThai._1)
+                            {
+                                <div class="img-holder text-danger mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex" style="background-color:blue">
+
+                                </div>
+                            }
+                            @if (item.TrangThai == TrangThai._2)
+                            {
+                                <div class="img-holder text-danger mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex" style="background-color:green">
+
+                                </div>
+                            }
+                            @if (item.TrangThai == TrangThai._3)
+                            {
+                                <div class="img-holder text-danger mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex" style="background-color:darkcyan">
+
+                                </div>
+                            }
+                            @if (item.TrangThai == TrangThai._4)
+                            {
+                                <div class="img-holder text-danger mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex" style="background-color:red">
+
+                                </div>
+                            }
+
                             <div class="job-content">
                                 <h5 class="text-center text-md-left">@item.MaKhNavigation.Name</h5>
                                 <ul class="d-md-flex flex-wrap text-capitalize ff-open-sans">
@@ -225,14 +246,14 @@
                                     <li class="mr-md-4">
                                         <i class="zmdi zmdi-map"></i> &nbsp; @item.DiaChi
                                     </li>
-                                   
+
 
 
                                 </ul>
                             </div>
                         </div>
                         <div class="job-right my-4 flex-shrink-0">
-                            <button class="btn d-block w-100 d-sm-inline-block btn-light" onclick="cartDetail(@item.MaDH)" data-toggle="modal" data-target="#modalCart">Chi tiết</button>
+                            <button class="btn d-block w-100 d-sm-inline-block btn-light" onclick="cartDetail('@item.MaDH')" data-toggle="modal" data-target="#modalCart">Chi tiết</button>
                         </div>
                     </div>
                 }

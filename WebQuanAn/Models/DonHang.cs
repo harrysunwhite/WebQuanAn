@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WebQuanAn.Areas.Identity.Data;
 
 namespace WebQuanAn.Models
 {
@@ -20,15 +21,15 @@ namespace WebQuanAn.Models
     {
        
 
-        public int MaDH { get; set; }
+        public string MaDH { get; set; }
         public DateTime ThoiGian { get; set; }
         public TrangThai TrangThai { get; set; }
-        public int MaKH { get; set; }
-
+        public string MaKH { get; set; }
+        [Required(ErrorMessage ="Vui lòng nhập chính xác địa chỉ giao hàng")]
         public string DiaChi { get; set; }
         public string GhiChu { get; set; }
      
-        public virtual KhachHang MaKhNavigation { get; set; }
+        public virtual AppUser MaKhNavigation { get; set; }
         public virtual ICollection<CTHD> CTHDs { get; set; }
     }
 

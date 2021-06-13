@@ -1,0 +1,468 @@
+﻿@model WebQuanAn.Models.DonHang
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IHttpContextAccessor HttpContextAccessor
+@using Microsoft.AspNetCore.Identity
+@using WebQuanAn.Areas.Identity.Data
+@{ Layout = null;}
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<style>
+
+
+    /* sign in FORM */
+    #logreg-forms {
+        width: 850px;
+        margin: 10vh auto;
+        background-color: #f3f3f3;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    }
+
+        #logreg-forms form {
+            width: 100%;
+            padding: 15px;
+            margin: auto;
+        }
+
+        #logreg-forms .form-control {
+            position: relative;
+            box-sizing: border-box;
+            height: auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+            #logreg-forms .form-control:focus {
+                z-index: 2;
+            }
+
+        #logreg-forms .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        #logreg-forms .form-signin input[type="password"] {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        #logreg-forms .social-login {
+            width: 390px;
+            margin: 0 auto;
+            margin-bottom: 14px;
+        }
+
+        #logreg-forms .social-btn {
+            font-weight: 100;
+            color: white;
+            width: 190px;
+            font-size: 0.9rem;
+        }
+
+        #logreg-forms a {
+            display: block;
+            padding-top: 10px;
+            color: lightseagreen;
+        }
+
+    #logreg-form .lines {
+        width: 200px;
+        border: 1px solid red;
+    }
+
+
+    #logreg-forms button[type="submit"] {
+        margin-top: 10px;
+    }
+
+    #logreg-forms .facebook-btn {
+        background-color: #3C589C;
+    }
+
+    #logreg-forms .google-btn {
+        background-color: #DF4B3B;
+    }
+
+    #logreg-forms .form-reset, #logreg-forms .form-signup {
+        display: none;
+    }
+
+        #logreg-forms .form-signup .social-btn {
+            width: 210px;
+        }
+
+        #logreg-forms .form-signup input {
+            margin-bottom: 2px;
+        }
+
+    .form-signup .social-login {
+        width: 210px !important;
+        margin: 0 auto;
+    }
+
+    /* Mobile */
+
+    @@media screen and (max-width:500px) {
+        #logreg-forms {
+            width: 300px;
+        }
+
+            #logreg-forms .social-login {
+                width: 200px;
+                margin: 0 auto;
+                margin-bottom: 10px;
+            }
+
+            #logreg-forms .social-btn {
+                font-size: 1.3rem;
+                font-weight: 100;
+                color: white;
+                width: 200px;
+                height: 56px;
+            }
+
+                #logreg-forms .social-btn:nth-child(1) {
+                    margin-bottom: 5px;
+                }
+
+                #logreg-forms .social-btn span {
+                    display: none;
+                }
+
+            #logreg-forms .facebook-btn:after {
+                content: 'Facebook';
+            }
+
+            #logreg-forms .google-btn:after {
+                content: 'Google+';
+            }
+    }
+
+    .bloc_left_price {
+        color: #c01508;
+        text-align: center;
+        font-weight: bold;
+        font-size: 150%;
+    }
+
+    .category_block li:hover {
+        background-color: #007bff;
+    }
+
+        .category_block li:hover a {
+            color: #ffffff;
+        }
+
+    .category_block li a {
+        color: #343a40;
+    }
+
+    .add_to_cart_block .price {
+        color: #c01508;
+        text-align: center;
+        font-weight: bold;
+        font-size: 200%;
+        margin-bottom: 0;
+    }
+
+    .add_to_cart_block .price_discounted {
+        color: #343a40;
+        text-align: center;
+        text-decoration: line-through;
+        font-size: 140%;
+    }
+
+    .product_rassurance {
+        padding: 10px;
+        margin-top: 15px;
+        background: #ffffff;
+        border: 1px solid #6c757d;
+        color: #6c757d;
+    }
+
+        .product_rassurance .list-inline {
+            margin-bottom: 0;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+            .product_rassurance .list-inline li:hover {
+                color: #343a40;
+            }
+
+    .reviews_product .fa-star {
+        color: gold;
+    }
+
+    .pagination {
+        margin-top: 20px;
+    }
+
+    footer {
+        background: #343a40;
+        padding: 40px;
+    }
+
+        footer a {
+            color: #f8f9fa !important
+        }
+</style>
+
+@{
+    var curUser = await UserManager.GetUserAsync(User);
+
+}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content" style="width:900px">
+        <div class="modal-header">
+            <div class="col-6 mr-auto" onclick="CartTemp()">
+                <a href=""> <i class="fa fa-arrow-left fa-2x" aria-hidden="true"></i></a>
+            </div>
+            <div class="col-6">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Bổ sung thông tin
+                </h4>
+            </div>
+
+        </div>
+        <div class="modal-body">
+
+            <div id="logreg-forms">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "frm", id = "frm", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Bổ sung thông tin khách hàng</h1>
+                    <div>
+                        <dl class="row">
+                            <dt class="col-sm-2">
+                                @Html.DisplayNameFor(curUser => curUser.MaKhNavigation.Name)
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(Model => curUser.Name)
+                            </dd>
+                            <dt class="col-sm-2">
+                                @Html.DisplayNameFor(model => model.MaKhNavigation.Sdt)
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => curUser.Sdt)
+                            </dd>
+                            <dt class="col-sm-2">
+                                Địa chỉ mail
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => curUser.Email)
+                            </dd>
+
+
+                        </dl>
+                    </div>
+
+                    <div class="form-group">
+
+                        <input asp-for="MaKH" class="form-control"  value="@UserManager.GetUserId(User)" />
+                        <span asp-validation-for="MaKH" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+
+                        <input asp-for="DiaChi" class="form-control" required placeholder="Nhập địa chỉ" />
+                        <span asp-validation-for="DiaChi" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+
+                        <textarea asp-for="GhiChu" class="form-control" placeholder="Ghi chú(tuỳ chọn)" />
+                        <span asp-validation-for="GhiChu" class="text-danger"></span>
+                    </div>
+
+
+                }
+
+              
+
+
+
+
+                <br>
+
+            </div>
+
+            <div class="container mb-4">
+                <div class="row">
+                    <div class="col-12">
+
+                        @{
+
+                            var session = HttpContextAccessor.HttpContext.Session;
+                            string jsoncart = session.GetString(WebQuanAn.Constants.SessionKey.Cart.CartItem);
+                            if (jsoncart != null)
+                            {
+                                decimal? total = 0;
+                                int stt = 1;
+                                var cart = JsonConvert.DeserializeObject<List<CartItemModel>>(jsoncart);
+                                <table class="table text-center col-10">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"> # </th>
+                                            <th scope="col">Thực Đơn</th>
+                                            <th scope="col">Giá</th>
+                                            <th scope="col" class="text-center">Số Lượng</th>
+                                            <th scope="col" class="text-right">Thành Tiền</th>
+                                            <th> </th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var cartitem in cart)
+                                    {
+                                        var thanhtien = cartitem.Quantity * cartitem.ThucDon.Gia;
+                                        total += thanhtien;
+
+                                        <tr>
+                                            <td>@(stt++)</td>
+                                            <td>@cartitem.ThucDon.TenMon</td>
+                                            <td>@(cartitem.ThucDon.Gia.ToString("n0").Replace(",","."))  VND</td>
+                                            <td><input asp-for="@cartitem.Quantity" class="form-control-sm" id="@($"quantity-{cartitem.ThucDon.Id}")" /></td>
+                                            <td>@(thanhtien.ToString("n0").Replace(",", "."))  VND</td>
+                                            <td>
+                                                <button class="btn btn-success updatecartitem"
+                                                        data-productid="@cartitem.ThucDon.Id">
+                                                    Cập nhật
+                                                </button>
+
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </table>
+                                <div class="row">
+                                    <div class="ml-auto p-2">
+                                        Tổng tiền:<strong>@(total?.ToString("n0").Replace(",", "."))  VND</strong>
+                                    </div>
+
+                                </div>
+
+                            }
+                            else
+                            {
+                                <p class="alert alert-danger">Giỏ hàng trống</p>
+                            }
+
+
+                        }
+
+
+                    </div>
+                    <div class="col mb-2">
+                        <div class="row">
+                            <div class="col-sm-12  col-md-6">
+                                <a class="btn btn-block btn-light" data-dismiss="modal" href="">Tiếp tục đặt hàng</a>
+                            </div>
+                            <div class="col-sm-12 col-md-6 text-right">
+                                <button class="btn btn btn-block btn-success text-uppercase" id="btFinish">Gửi đơn</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<script src="~/js/toastr.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $(".updatecartitem").click(function (event) {
+
+            event.preventDefault();
+            var id = $(this).attr("data-productid");
+            var quantity = $("#quantity-" + id).val();
+            $.ajax({
+                type: "POST",
+                url: "/Cart/UpdateCart",
+                data: {
+                    id: id,
+                    quantity: quantity
+                },
+                success: function (result) {
+                    $('#myModal').html(result);
+                    _getCount();
+                }
+            });
+        });
+
+
+        $("#btFinish").click(function () {
+
+            if ($("#frm").valid()) {
+                Swal.fire({
+                    title: 'Bạn muốn gửi đơn hàng này?',
+                    text: "",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Gửi',
+                    cancelButtonText: 'Huỷ'
+                }).then((result) => {
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: "/cart/Create",
+                        data: $("#frm").serialize(),
+                        success: function (result) {
+                            $('#preloader-wrapper').toggleClass('hide');
+                            if (result.status >= 1) {
+                                toastr.success(result.text)
+
+                                location.reload();
+
+                            }
+                            else {
+                                toastr.warning(result.text);
+                            }
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        },
+                        failure: function (message) {
+                            $('#preloader-wrapper').toggleClass('hide');
+                        }
+                    });
+
+
+                })
+               
+            }
+
+
+        });
+    });
+
+
+
+</script>
+
+
+@section Scripts {
+
+
+
+}
