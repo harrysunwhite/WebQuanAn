@@ -62,6 +62,22 @@ namespace WebQuanAn.Services
 
             }
         }
+
+        public List<CTHD> GetCTHDs(string id)
+        {
+            var Listitem = _context.CTHD.Where(d => d.MaDh == id).Include(i => i.MaTdNavigation).Include(i => i.MaDhNavigation).ToList();
+
+            if (Listitem == null)
+            {
+                return null;
+            }
+            return Listitem;
+        }
+
+        public IEnumerable<DonHang> GetDonHangs(string Makh)
+        {
+            return _context.DonHang.Where(x => x.MaKH == Makh).ToList();
+        }
         public IPagedList<ThucDon> SearchByCondition(ThucDonSearchModel model)
         {
 

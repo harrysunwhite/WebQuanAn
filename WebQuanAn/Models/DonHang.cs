@@ -37,6 +37,7 @@ namespace WebQuanAn.Models
     {
         public int? Page { get; set; }
         public string TenKH { get; set; }
+        public string MaKH { get; set; }
         public string SDT { get; set; }
         public DateTime? NgayHD { get; set; }
         public int TrangThai { get; set; }

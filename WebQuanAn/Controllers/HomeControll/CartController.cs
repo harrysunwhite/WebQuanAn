@@ -14,19 +14,19 @@ using WebQuanAn.Interfaces;
 namespace WebQuanAn.Controllers
 {
     [Authorize]
-    public class CartController:Controller
+    public class CartController : Controller
     {
         private ILogger<CartController> _logger;
 
         private IHome _service;
-        public CartController(ILogger<CartController> logger,IHome service)
+        public CartController(ILogger<CartController> logger, IHome service)
         {
             _service = service;
             _logger = logger;
         }
-   
+
         [HttpGet]
-        
+
         public List<CartItemModel> ListCart()
         {
             var session = HttpContext.Session;
@@ -38,7 +38,7 @@ namespace WebQuanAn.Controllers
             return new List<CartItemModel>();
         }
         [HttpGet]
-       
+
         public int countQuantity()
         {
             var cart = ListCart();
@@ -56,7 +56,7 @@ namespace WebQuanAn.Controllers
             session.SetString(SessionKey.Cart.CartItem, jsoncart);
         }
         [HttpGet]
-     
+
         public IActionResult AddToCart([FromRoute] int id)
         {
 
@@ -93,15 +93,20 @@ namespace WebQuanAn.Controllers
             }
 
             SaveCartSession(cart);
-            return PartialView("~/Views/Home/_CartPartial.cshtml",ListCart());
+            return PartialView("~/Views/Home/_CartPartial.cshtml", ListCart());
+        }
+
+        public IActionResult EmptyCart()
+        {
+            return PartialView("~/Views/Home/_EmptyCart.cshtml");
         }
 
 
 
-       
-        
+
+
         [HttpPost]
-        public IActionResult UpdateCart( int id,  int quantity)
+        public IActionResult UpdateCart(int id, int quantity)
         {
 
             // Cập nhật Cart thay đổi số lượng quantity ...
@@ -128,7 +133,7 @@ namespace WebQuanAn.Controllers
                 donHang.TrangThai = TrangThai._1;
 
                 var liscart = ListCart();
-              
+
                 if (_service.Add(donHang, liscart) != null)
                 {
                     HttpContext.Session.Remove(SessionKey.Cart.CartItem);
@@ -153,5 +158,19 @@ namespace WebQuanAn.Controllers
         {
             return View("~/Views/Home/_CartFinalPartial.cshtml");
         }
+
+        public IActionResult CartDetail(string id)
+        {
+
+            var listTD = _service.GetCTHDs(id);
+            return PartialView("~/Views/Home/_CartDetail.cshtml", listTD);
+
+
+
+
+        }
+
     }
+        
+     
 }

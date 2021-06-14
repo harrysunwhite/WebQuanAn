@@ -14,28 +14,28 @@
         </div>
         <div class="modal-body">
             @{ var session = HttpContextAccessor.HttpContext.Session;
-                            string jsoncart = session.GetString(WebQuanAn.Constants.SessionKey.Cart.CartItem);
-                            List<CartItemModel> cart = JsonConvert.DeserializeObject<List<CartItemModel>>(jsoncart);
-                            if (jsoncart != null)
-                            {
-                                decimal? total = 0;
-                                int stt = 1;
+                string jsoncart = session.GetString(WebQuanAn.Constants.SessionKey.Cart.CartItem);
+                List<CartItemModel> cart = JsonConvert.DeserializeObject<List<CartItemModel>>(jsoncart);
+                if (jsoncart != null)
+                {
+                    decimal? total = 0;
+                    int stt = 1;
 
-                                if (cart.Count > 0)
-                                {
-                <table class="table">
-                    <tr>
-                        <th>#</th>
-                        <th>Sản phẩm</th>
-                        <th>Giá</th>
-                        <th>Số lượng</th>
-                        <th>Thành tiền</th>
-                        <th></th>
-                    </tr>
-                    @foreach (var cartitem in cart)
+                    if (cart.Count > 0)
                     {
-                        var thanhtien = cartitem.Quantity * cartitem.ThucDon.Gia;
-                        total += thanhtien;
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+            <th></th>
+        </tr>
+        @foreach (var cartitem in cart)
+        {
+            var thanhtien = cartitem.Quantity * cartitem.ThucDon.Gia;
+            total += thanhtien;
 
 <tr>
     <td>@(stt++)</td>
@@ -49,30 +49,31 @@
             <i class="fa fa-trash"></i>
         </button>
     </td>
-</tr>}
-                    <tr>
-                        <td colspan="4" class="text-right">Tổng tiền</td>
-                        <td><string>@(total?.ToString("n0").Replace(",", "."))  VND</string></td>
-                        <td></td>
-                    </tr>
-                </table> }
-                                else
-                                {
-                <p class="alert alert-danger">Giỏ hàng trống</p> }
+</tr>
+}
+        <tr>
+            <td colspan="4" class="text-right">Tổng tiền</td>
+            <td><string>@(total?.ToString("n0").Replace(",", "."))  VND</string></td>
+            <td></td>
+        </tr>
+    </table> }
+else
+{
+<p class="alert alert-danger">Giỏ hàng trống</p> }
 
-                            }
-                            else
-                            {
-                <p class="alert alert-danger">Giỏ hàng trống</p> } }
+}
+else
+{
+<p class="alert alert-danger">Giỏ hàng trống</p> } }
 
         </div>
         <div class="modal-footer">
             @if (cart.Count > 0)
             {
 <a onclick="Chekout()" class="btn btn-success">Hoàn tât</a> }
-            else
-            {
-<a class="btn btn-success">Hoàn tất</a>            }
+else
+{
+<a class="btn btn-success">Hoàn tất</a>}
 
         </div>
     </div>

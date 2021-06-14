@@ -63,7 +63,7 @@ namespace WebQuanAn.Services
                                                                                                           if(!string.IsNullOrWhiteSpace(model.Sdt)) 
                                 
                    {
-                     listUnpaged = listUnpaged.Where(x => x.Sdt.ToUpper().Contains(model.Sdt.ToUpper()));
+                     listUnpaged = listUnpaged.Where(x => x.PhoneNumber.ToUpper().Contains(model.Sdt.ToUpper()));
                    }
                          
                                   

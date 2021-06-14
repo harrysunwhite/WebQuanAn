@@ -248,10 +248,10 @@
                                 @Html.DisplayFor(Model => curUser.Name)
                             </dd>
                             <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.MaKhNavigation.Sdt)
+                                @Html.DisplayNameFor(model => model.MaKhNavigation.PhoneNumber)
                             </dt>
                             <dd class="col-sm-10">
-                                @Html.DisplayFor(model => curUser.Sdt)
+                                @Html.DisplayFor(model => curUser.PhoneNumber)
                             </dd>
                             <dt class="col-sm-2">
                                 Địa chỉ mail
@@ -264,7 +264,7 @@
                         </dl>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" style="display:none">
 
                         <input asp-for="MaKH" class="form-control"  value="@UserManager.GetUserId(User)" />
                         <span asp-validation-for="MaKH" class="text-danger"></span>
@@ -325,7 +325,7 @@
                                             <td>@(stt++)</td>
                                             <td>@cartitem.ThucDon.TenMon</td>
                                             <td>@(cartitem.ThucDon.Gia.ToString("n0").Replace(",","."))  VND</td>
-                                            <td><input asp-for="@cartitem.Quantity" class="form-control-sm" id="@($"quantity-{cartitem.ThucDon.Id}")" /></td>
+                                            <td><input asp-for="@cartitem.Quantity" class="form-control-sm" min="1" id="@($"quantity-{cartitem.ThucDon.Id}")" /></td>
                                             <td>@(thanhtien.ToString("n0").Replace(",", "."))  VND</td>
                                             <td>
                                                 <button class="btn btn-success updatecartitem"
@@ -430,9 +430,15 @@
                         success: function (result) {
                             $('#preloader-wrapper').toggleClass('hide');
                             if (result.status >= 1) {
-                                toastr.success(result.text)
+                                Swal.fire(
 
-                                location.reload();
+                                    result.text,
+                                    '',
+                                    'success'
+                                )
+                                Empty();
+
+                                $('#myModal').modal('hide');
 
                             }
                             else {
@@ -455,7 +461,28 @@
 
         });
     });
+    function Empty() {
 
+        $.ajax({
+            url: 'cart/EmptyCart/',
+            type: "Get",
+            contentType: "application/json; charset=utf-8",
+
+            async: true,
+            success: function (result) {
+
+
+                _getCount();
+
+                $('#myModal').html(result);
+
+
+
+            }
+
+
+        });
+    }
 
 
 </script>

@@ -29,9 +29,7 @@ namespace WebQuanAn.Areas.Identity.Data
         [PersonalData]
         [Display(Name = "Ngày sinh")]
         public DateTime NgaySinh { get; set; }
-        [PersonalData]
-        [Display(Name = "Số điện thoại")]
-        public string Sdt { get; set; }
+      
         [PersonalData]
         [Display(Name = "Link Facebook")]
         public string FacebookLink { get; set; }

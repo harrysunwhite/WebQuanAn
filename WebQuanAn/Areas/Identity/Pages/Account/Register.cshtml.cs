@@ -66,6 +66,7 @@ namespace WebQuanAn.Areas.Identity.Pages.Account
             public DateTime NgaySinh { get; set; }
             [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
             [Display(Name = "Số điện thoại")]
+            [RegularExpression(@"((09|03|07|08|05)+([0-9]{8})\b)", ErrorMessage = "Định dạng số điện thoại không đúng")]
             public string Sdt { get; set; }
             
             [DataType(DataType.Url,ErrorMessage ="URL không hợp lệ")]
@@ -100,7 +101,7 @@ namespace WebQuanAn.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = Input.Email, Email = Input.Email,Name = Input.Name,GioiTinh = (Data.Gender)Input.GioiTinh,NgaySinh = Input.NgaySinh,Sdt = Input.Sdt,FacebookLink = Input.FacebookLink };
+                var user = new AppUser { UserName = Input.Email, Email = Input.Email,Name = Input.Name,GioiTinh = (Data.Gender)Input.GioiTinh,NgaySinh = Input.NgaySinh,PhoneNumber = Input.Sdt,FacebookLink = Input.FacebookLink };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

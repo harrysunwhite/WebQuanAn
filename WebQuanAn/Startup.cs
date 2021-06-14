@@ -43,6 +43,17 @@ namespace WebQuanAn
                 options.ExpireTimeSpan = TimeSpan.FromHours(1);
                 options.SlidingExpiration = true;
             });
+            services.AddAuthentication()
+    .AddGoogle(googleOptions =>
+    {
+        // Đọc thông tin Authentication:Google từ appsettings.json
+        IConfigurationSection googleAuthNSection = Configuration.GetSection("Authentication:Google");
+
+        // Thiết lập ClientID và ClientSecret để truy cập API google
+        googleOptions.ClientId = googleAuthNSection["ClientId"];
+        googleOptions.ClientSecret = googleAuthNSection["ClientSecret"];
+
+    });
 
             services.AddDbContextPool<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DataContextConnection")));
             services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false).AddErrorDescriber<CustomErrorDescriber>()

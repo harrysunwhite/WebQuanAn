@@ -1,0 +1,16 @@
+﻿@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+    var curUser = await UserManager.GetUserAsync(User);
+}
+<div class="">
+    <div class="list-group ">
+        <a class="list-group-item list-group-item-action @ManageNavPages.ProfileNavClass(ViewContext)" asp-page="./profile">Hồ sơ của bạn</a>
+        <a class="list-group-item list-group-item-action @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Chỉnh sửa hồ sơ</a>
+        <a class="list-group-item list-group-item-action @ManageNavPages.CartInfoNavClass(ViewContext)" id="CartInfo" asp-page="./CartInfo">Lịch sử đơn hàng</a>
+
+
+
+    </div>
+</div>

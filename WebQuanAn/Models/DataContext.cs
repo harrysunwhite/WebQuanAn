@@ -135,7 +135,7 @@ namespace WebQuanAn.Models
 
                 entity.Property(e => e.NgaySinh).HasColumnType("date");
 
-                entity.Property(e => e.Sdt)
+                entity.Property(e => e.PhoneNumber)
                     .IsRequired()
                     .HasMaxLength(15)
                     .IsUnicode(false);

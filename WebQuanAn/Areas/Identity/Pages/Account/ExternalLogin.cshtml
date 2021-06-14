@@ -1,11 +1,12 @@
 ﻿@page
-@model WebQuanAn.Areas.Identity.Pages.Account.RegisterModel
-@using WebQuanAn.Areas.Identity.Data
+@model ExternalLoginModel
 @{
-    ViewData["Title"] = "Đăng ký";
+    ViewData["Title"] = "Xác thực tài khoản";
     Layout = "ProfileLayout";
-
 }
+
+
+
 
 
     <div class="container register">
@@ -13,22 +14,20 @@
             <div class="col-md-3 register-left">
                 <img data-toggle="modal" data-target="#exampleModal" src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
                 <h3>Chào mừng bạn</h3>
-                <p>Chỉ cần vài bước nữa là bạn có thể mua hàng</p>
-                <a href="#!1" data-toggle="modal" data-target="#loginModal" class="btn btn-light text-dark">Đăng nhập</a>
+                <p>
+                    Xác thực tài khoản thành công bằng <strong>@Model.ProviderDisplayName</strong>.
+                    Cập nhật thông tin để liên kết tài khoản
+                </p>
+                <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-light text-dark">Đăng nhập bằng tài khoản</a>
             </div>
             <div class="col-md-8 register-right">
                 <div class="col-12">
-                  
+
                 </div>
 
 
                 <div class="tab-content" id="myTabContent">
-                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post" class="col-10 ml-auto p-2" >
-                        <div class="row ">
-                            <h4 class="m-auto">Tạo tài khoản mới</h4>
-                        </div>
-                        
-                        <hr />
+                    <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="col-10 ml-auto p-2">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="row">
                             <div class="form-group col-12">
@@ -37,19 +36,8 @@
                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                             </div>
                         </div>
+
                        
-                        <div class="row">
-                            <div class="form-group col-6">
-                                <label asp-for="Input.Password"></label>
-                                <input asp-for="Input.Password" class="form-control" />
-                                <span asp-validation-for="Input.Password" class="text-danger"></span>
-                            </div>
-                            <div class="form-group col-6">
-                                <label asp-for="Input.ConfirmPassword"></label>
-                                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="form-group col-6">
                                 <label asp-for="Input.Name"></label>
@@ -85,13 +73,7 @@
                                 <span asp-validation-for="Input.FacebookLink" class="text-danger"></span>
                             </div>
                         </div>
-
-                       
-
-                        <div class="row text-center p-2">
-                            <button type="submit" class="btn btn-primary btn-block">Đăng ký</button>
-                        </div>
-                       
+                        <button type="submit" class="btn btn-primary">Xác nhận</button>
                     </form>
 
                 </div>
@@ -103,6 +85,11 @@
 
 
 
+
+
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+

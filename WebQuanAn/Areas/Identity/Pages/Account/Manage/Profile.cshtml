@@ -1,0 +1,74 @@
+﻿@page
+
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Profile;
+
+}
+
+@using Microsoft.AspNetCore.Identity
+@using WebQuanAn.Areas.Identity.Data
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+@{ 
+    var curUser = await UserManager.GetUserAsync(User);
+}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Hồ sơ của bạn</h4>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form>
+                    <div class="form-group row">
+                        <label for="username" class="col-4 col-form-label">Email</label>
+                        <div class="col-8">
+                            @curUser.Email
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="name" class="col-4 col-form-label">Họ và tên</label>
+                        <div class="col-8">
+                            @curUser.Name
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="lastname" class="col-4 col-form-label">Giới tính</label>
+                        <div class="col-8">
+                            @Html.DisplayFor(Model => curUser.GioiTinh)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="text" class="col-4 col-form-label">Ngày sinh</label>
+                        <div class="col-8">
+                            @curUser.NgaySinh.ToString("dd/MM/yyyy")
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="text" class="col-4 col-form-label">LinkFacebook</label>
+                        <div class="col-8">
+                            @curUser.PhoneNumber
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="text" class="col-4 col-form-label">LinkFacebook</label>
+                        <div class="col-8">
+                            @curUser.FacebookLink
+                        </div>
+                    </div>
+
+                    
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

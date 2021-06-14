@@ -73,7 +73,7 @@ namespace WebQuanAn.Services
             if (!string.IsNullOrWhiteSpace(model.SDT))
 
             {
-                listUnpaged = listUnpaged.Where(x => x.MaKhNavigation.Sdt.ToUpper().Contains(model.SDT.ToUpper()));
+                listUnpaged = listUnpaged.Where(x => x.MaKhNavigation.PhoneNumber.ToUpper().Contains(model.SDT.ToUpper()));
             }
 
             if(!string.IsNullOrWhiteSpace(model.TrangThai.ToString())&&model.TrangThai!=0)
@@ -84,7 +84,7 @@ namespace WebQuanAn.Services
             if (!string.IsNullOrWhiteSpace(model.NgayHD.ToString()))
 
             {
-                listUnpaged = listUnpaged.Where(x => x.MaKhNavigation.Sdt.ToUpper().Contains(model.SDT.ToUpper()));
+                listUnpaged = listUnpaged.Where(x => x.MaKhNavigation.PhoneNumber.ToUpper().Contains(model.SDT.ToUpper()));
             }
 
 

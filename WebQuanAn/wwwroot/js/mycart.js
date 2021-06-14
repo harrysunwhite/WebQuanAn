@@ -71,6 +71,29 @@ function CartTemp() {
 
     });
 }
+
+function Empty() {
+
+    $.ajax({
+        url: 'cart/EmptyCart/',
+        type: "Get",
+        contentType: "application/json; charset=utf-8",
+
+        async: true,
+        success: function (result) {
+
+
+            _getCount();
+
+            $('#myModal').html(result);
+
+
+
+        }
+
+
+    });
+}
 function remove(id) {
 
     $.ajax({
