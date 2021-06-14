@@ -430,6 +430,7 @@
                         success: function (result) {
                             $('#preloader-wrapper').toggleClass('hide');
                             if (result.status >= 1) {
+                                $('#myModal').modal('hide');
                                 Swal.fire(
 
                                     result.text,
@@ -438,7 +439,7 @@
                                 )
                                 Empty();
 
-                                $('#myModal').modal('hide');
+                               
 
                             }
                             else {

@@ -43,7 +43,7 @@ namespace WebQuanAn.Services
             try
             {
                 _context.Add(donHang);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
                 foreach (var item in cartItems)
                 {
                     var TempData = new CTHD();
@@ -51,7 +51,7 @@ namespace WebQuanAn.Services
                     TempData.MaTd = item.ThucDon.Id;
                     TempData.SoLuong = item.Quantity;
                     _context.Add(TempData);
-                    _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
                 return donHang;
             }
@@ -76,7 +76,7 @@ namespace WebQuanAn.Services
 
         public IEnumerable<DonHang> GetDonHangs(string Makh)
         {
-            return _context.DonHang.Where(x => x.MaKH == Makh).ToList();
+            return _context.DonHang.Where(x => x.MaKH == Makh).OrderByDescending(t=>t.ThoiGian).ToList();
         }
         public IPagedList<ThucDon> SearchByCondition(ThucDonSearchModel model)
         {
